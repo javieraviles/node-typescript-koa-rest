@@ -9,8 +9,14 @@
   "author": "Javier Aviles",
   "license": "MIT",
   "devDependencies": {
+    "@types/koa": "^2.0.45",
+    "@types/koa-router": "^7.0.28",
     "nodemon": "^1.17.4",
     "ts-node": "^6.0.3",
     "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "koa": "^2.5.1",
+    "koa-router": "^7.4.0"
   }
 }
