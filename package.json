@@ -2,15 +2,19 @@
   "name": "node-typescript-koa-rest",
   "version": "1.0.0",
   "description": "API REST using NodeJS and KOA framework, typescript",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch-server": "cross-env NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
+    "build": "tslint --project . && tsc"
   },
   "author": "Javier Aviles",
   "license": "MIT",
   "devDependencies": {
-    "@types/koa": "^2.0.45",
+    "@types/koa": "2.0.44",
     "@types/koa-router": "^7.0.28",
+    "@types/node": "^6.0.110",
+    "cross-env": "^5.1.5",
     "nodemon": "^1.17.4",
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
