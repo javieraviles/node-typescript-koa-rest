@@ -5,8 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch-server": "cross-env NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node ./src/server.ts",
-    "build": "tslint --project . && tsc"
+    "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
+    "build-ts": "tsc",
+    "copy-static-assets": "ts-node copyStaticAssets.ts",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "serve": "node dist/server.js",
+    "build": "npm run tslint && npm run build-ts && npm run copy-static-assets",
+    "start": "npm run serve"
   },
   "author": "Javier Aviles",
   "license": "MIT",
@@ -14,13 +19,15 @@
     "@types/koa": "2.0.44",
     "@types/koa-router": "^7.0.28",
     "@types/node": "^6.0.110",
-    "cross-env": "^5.1.5",
+    "@types/shelljs": "^0.7.9",
     "nodemon": "^1.17.4",
+    "shelljs": "^0.8.2",
     "ts-node": "^6.0.3",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   },
   "dependencies": {
+    "dotenv": "^5.0.1",
     "koa": "^2.5.1",
     "koa-router": "^7.4.0"
   }
