@@ -19,6 +19,7 @@
     "@types/koa-router": "^7.0.28",
     "@types/node": "^6.0.110",
     "@types/shelljs": "^0.7.9",
+    "@types/winston": "^2.3.9",
     "nodemon": "^1.17.4",
     "shelljs": "^0.8.2",
     "ts-node": "^6.0.3",
@@ -28,6 +29,7 @@
   "dependencies": {
     "dotenv": "^5.0.1",
     "koa": "^2.5.1",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "winston": "^2.4.2"
   }
 }
