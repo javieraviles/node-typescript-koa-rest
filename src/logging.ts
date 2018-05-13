@@ -25,7 +25,7 @@ export function logger(winstonInstance) {
         const msg: string = `${ctx.method} ${ctx.originalUrl} ${ctx.status} ${ms}ms`;
 
         winstonInstance.configure({
-            level: 'debug',
+            level: config.debugLogging ? 'debug' : 'info',
             transports: [
                 //
                 // - Write to all logs with level `debug` and below to console.
