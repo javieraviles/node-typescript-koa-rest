@@ -145,6 +145,10 @@ Notice that TSLint is not a part of the main watch task.
 It can be annoying for TSLint to clutter the output window while in the middle of writing a function, so I elected to only run it only during the full build.
 If you are interesting in seeing TSLint feedback as soon as possible, I strongly recommend the [TSLint extension in VS Code]().
 
+# Logging
+Winston is designed to be a simple and universal logging library with support for multiple transports.
+
+Current configuration of the logger can be found in the file "logging.ts". It will log 'error' level to an error.log file and 'debug' or 'info' level (depending on NODE_ENV environment variable, debug if == development) to the console.
 
 # Dependencies
 Dependencies are managed through `package.json`.
@@ -156,6 +160,7 @@ In that file you'll find two sections:
 | dotenv                          | Loads environment variables from .env file.                           |
 | koa                             | Node.js web framework.                                                |
 | koa-router                      | Router middleware for koa.                                            |
+| winston                         | Logging library                                                       |
 
 ## `devDependencies`
 
