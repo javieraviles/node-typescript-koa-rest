@@ -4,7 +4,6 @@
   "description": "API REST using NodeJS and KOA framework, typescript",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
     "build-ts": "tsc",
     "copy-static-assets": "ts-node copyStaticAssets.ts",
