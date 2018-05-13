@@ -2,6 +2,8 @@
 
 The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA.
 
+Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
+
 ## Pre-reqs
 To build and run this app locally you will need:
 - Install [Node.js](https://nodejs.org/en/)
@@ -13,7 +15,7 @@ To build and run this app locally you will need:
 ## Included middleware:
  * koa-router
 
-## Getting Started
+# Getting Started
 - Clone the repository
 ```
 git clone --depth=1 https://github.com/javieraviles/node-typescript-koa-rest.git <project_name>
@@ -120,17 +122,17 @@ Below is a list of all the scripts this template has available:
 | `tslint`                  | Runs TSLint on project files                                                                      |
 | `copy-static-assets`      | Calls script that copies JS libs, fonts, and images to dist directory                             |
 
-## TSLint
+# TSLint
 TSLint is a code linter which mainly helps catch minor code quality and style issues.
 TSLint is very similar to ESLint or JSLint but is built with TypeScript in mind.
 
-### TSLint rules
+## TSLint rules
 Like most linters, TSLint has a wide set of configurable rules as well as support for custom rule sets.
 All rules are configured through `tslint.json`.
 In this project, we are using a fairly basic set of rules with no additional custom rules.
 The settings are largely based off the TSLint settings that we use to develop TypeScript itself.
 
-### Running TSLint
+## Running TSLint
 Like the rest of our build steps, we use npm scripts to invoke TSLint.
 To run TSLint you can call the main build script or just the TSLint task.
 ```
@@ -142,10 +144,10 @@ It can be annoying for TSLint to clutter the output window while in the middle o
 If you are interesting in seeing TSLint feedback as soon as possible, I strongly recommend the [TSLint extension in VS Code]().
 
 
-## Dependencies
+# Dependencies
 Dependencies are managed through `package.json`.
 In that file you'll find two sections:
-### `dependencies`
+## `dependencies`
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
@@ -153,7 +155,7 @@ In that file you'll find two sections:
 | koa                             | Node.js web framework.                                                |
 | koa-router                      | Router middleware for koa.                                            |
 
-### `devDependencies`
+## `devDependencies`
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
