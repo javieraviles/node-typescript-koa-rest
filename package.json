@@ -14,6 +14,14 @@
   },
   "author": "Javier Aviles",
   "license": "MIT",
+  "homepage": "https://github.com/javieraviles/node-typescript-koa-rest#readme",
+  "keywords": [
+    "typescript",
+    "koa",
+    "rest",
+    "starter"
+  ],
+  "repository": "github:javieraviles/node-typescript-koa-rest",
   "devDependencies": {
     "@types/dotenv": "^4.0.3",
     "@types/koa": "2.0.44",
