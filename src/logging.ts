@@ -1,6 +1,6 @@
 import * as Koa from 'koa';
 import { config } from './config';
-
+import * as winston from 'winston';
 
 export function logger(winstonInstance) {
     return async(ctx: Koa.Context, next: () => Promise<any>) => {
@@ -23,6 +23,18 @@ export function logger(winstonInstance) {
         }
 
         const msg: string = `${ctx.method} ${ctx.originalUrl} ${ctx.status} ${ms}ms`;
+
+        winstonInstance.configure({
+            level: 'debug',
+            transports: [
+                //
+                // - Write to all logs with level `debug` and below to console.
+                new winston.transports.Console({ colorize: true }),
+                //
+                // - Write all logs error (and below) to `error.log`.
+                new winston.transports.File({ filename: 'error.log', level: 'error' })
+            ]
+        });
 
         winstonInstance.log(logLevel, msg);
     };
