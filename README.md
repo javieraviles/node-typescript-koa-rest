@@ -35,7 +35,14 @@ npm install
 npm run build
 npm run start
 ```
-Optional: you can create a .env file containing all the env variables you want to set, dotenv library will take care of setting them.
+
+## Environment variables
+
+Create a .env file containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
+
+NODE_PORT -> port wher the server will be started on
+NODE_ENV -> environment, development value will set the logger as debug level, also important for CI
+JWT_SECRET -> secret value, JWT tokens should be signed with this value
 
 ## Getting TypeScript
 TypeScript itself is simple to add to any project with `npm`.
@@ -148,10 +155,44 @@ Notice that TSLint is not a part of the main watch task.
 It can be annoying for TSLint to clutter the output window while in the middle of writing a function, so I elected to only run it only during the full build.
 If you are interesting in seeing TSLint feedback as soon as possible, I strongly recommend the [TSLint extension in VS Code]().
 
+
 # Logging
 Winston is designed to be a simple and universal logging library with support for multiple transports.
 
-Current configuration of the logger can be found in the file "logging.ts". It will log 'error' level to an error.log file and 'debug' or 'info' level (depending on NODE_ENV environment variable, debug if == development) to the console.
+A "logger" middleware passing a winstonInstance has been created. Current configuration of the logger can be found in the file "logging.ts". It will log 'error' level to an error.log file and 'debug' or 'info' level (depending on NODE_ENV environment variable, debug if == development) to the console.
+
+```
+// Logger middleware -> use winston as logger (logging.ts with config)
+app.use(logger(winston));
+```
+
+# Authentication - Security
+The idea is to keep the API as clean as possible, therefore the auth will be done from the client using an auth provider such as Auth0. The client making requests to the API should include the JWT in the Authorization header as "Authorization: Bearer <jwt_token>". HS256 will be used as the secret will be known by both your api and your client and will be used to sign the token, so make sure you keep it hidden.
+
+As can be found in the server.ts file, a JWT middleware has been added, passing the secret from an environment variable. The middleware will validate that every request to the routes below, MUST include a valid JWT signed with the same secret. The middleware will set automatically the payload information in ctx.state.user.
+
+```
+// JWT middleware -> below this line, routes are only reached if JWT token is valid, secret as env variable
+app.use(jwt({ secret: process.env.JWT_SECRET }));
+```
+Go to the website [https://jwt.io/](https://jwt.io/) to create JWT tokens for testing/debugging purposes. Select algorithm HS256 and include the generated token in the Authorization header to pass through the jwt middleware.
+
+Custom 401 handling -> if you don't want to expose koa-jwt errors to users:
+```
+app.use(function(ctx, next){
+  return next().catch((err) => {
+    if (401 == err.status) {
+      ctx.status = 401;
+      ctx.body = 'Protected resource, use Authorization header to get access\n';
+    } else {
+      throw err;
+    }
+  });
+});
+```
+
+If you want to authenticate from the API, and you fancy the idea of an auth provider like Auth0, have a look at [jsonwebtoken — JSON Web Token signing and verification](https://github.com/auth0/node-jsonwebtoken)
+
 
 # Dependencies
 Dependencies are managed through `package.json`.
@@ -162,6 +203,7 @@ In that file you'll find two sections:
 | ------------------------------- | --------------------------------------------------------------------- |
 | dotenv                          | Loads environment variables from .env file.                           |
 | koa                             | Node.js web framework.                                                |
+| koa-jwt                         | Middleware to validate JWT tokens                                     |
 | koa-router                      | Router middleware for koa.                                            |
 | winston                         | Logging library                                                       |
 
