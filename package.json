@@ -1,6 +1,6 @@
 {
   "name": "node-typescript-koa-rest",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "API REST using NodeJS and KOA framework, typescript",
   "main": "dist/index.js",
   "scripts": {
@@ -18,6 +18,9 @@
   "keywords": [
     "typescript",
     "koa",
+    "koa2",
+    "jwt",
+    "winston",
     "rest",
     "starter"
   ],
