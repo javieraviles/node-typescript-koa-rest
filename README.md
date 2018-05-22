@@ -42,10 +42,10 @@ npm run start
 
 Create a .env file containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
 
-NODE_PORT -> port wher the server will be started on
-NODE_ENV -> environment, development value will set the logger as debug level, also important for CI
-JWT_SECRET -> secret value, JWT tokens should be signed with this value
-
+ * NODE_PORT -> port where the server will be started on
+ * NODE_ENV -> environment, development value will set the logger as debug level, also important for CI
+ * JWT_SECRET -> secret value, JWT tokens should be signed with this value
+ 
 ## Getting TypeScript
 TypeScript itself is simple to add to any project with `npm`.
 ```
