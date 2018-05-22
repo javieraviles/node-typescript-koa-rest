@@ -19,6 +19,8 @@ To build and run this app locally you will need:
 
 ## Included middleware:
  * koa-router
+ * Winston Logger
+ * JWT Security koa-jwt
 
 # Getting Started
 - Clone the repository
