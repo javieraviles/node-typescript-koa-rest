@@ -5,7 +5,7 @@
 [![Dependency Status](https://david-dm.org/javieraviles/node-typescript-koa-rest.svg)](https://david-dm.org/javieraviles/node-typescript-koa-rest)
 [![Build Status](https://travis-ci.org/javieraviles/node-typescript-koa-rest.svg?branch=develop)](https://travis-ci.org/javieraviles/node-typescript-koa-rest)
 
-The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA.
+The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA and an SQL DB.
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
@@ -16,11 +16,18 @@ To build and run this app locally you will need:
 ## Features:
  * Nodemon - server auto-restarts when code changes
  * Koa v2
+ * TypeORM (SQL DB) with basic CRUD included
+ * Docker-compose ready to go
 
 ## Included middleware:
  * koa-router
+ * koa-bodyparser
  * Winston Logger
  * JWT Security koa-jwt
+
+ ## Roadmap
+ * I am thinking about getting on board "class-validator", to validate entities before persisting them to the DB. That would leave the CRUD perfectly working.
+ * Also need to refactor "Routes.ts" and have one file just for the "user" CRUD.
 
 # Getting Started
 - Clone the repository
@@ -38,9 +45,22 @@ npm run build
 npm run start
 ```
 
-## Environment variables
+## Docker (optional)
+A docker-compose file has been added to the project with a postgreSQL (already setting user, pass and dbname as the ORM config is expecting) and an ADMINER image (easy web db client).
 
-Create a .env file containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
+It is as easy as go to the project folder and execute the command 'docker-compose up' once you have Docker installed, and both the postgreSQL server and the Adminer client will be running in ports 5432 and 8080 respectively with all the config you need to start playing around. 
+
+If you use Docker natively, the host for the server which you will need to include in the ORM configuration file will be localhost, but if you were to run Docker in older Windows versions, you will be using Boot2Docker and probably your virtual machine will use your ip 192.168.99.100 as network adapter. This mean your database host will be the aforementioned ip and in case you want to access the web db client you will also need to go to http://19.168.99.100/8080
+
+## Setting up the Database - ORM
+This API is prepared to work with an SQL database, using [TypeORM](https://github.com/typeorm/typeorm). In this case we are using postgreSQL, and that is why in the package.json 'pg' has been included. If you where to use a different SQL database remember to install the correspondent driver.
+
+The ORM configuration and connection to the database is in the file 'ormconfig.json'.
+
+You can find an implemented CRUD of the entity user in routes.ts file.
+
+## Environment variables
+Create a .env file (or just rename the .example.env) containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
 
  * NODE_PORT -> port where the server will be started on
  * NODE_ENV -> environment, development value will set the logger as debug level, also important for CI
@@ -72,8 +92,10 @@ The full folder structure of this app is explained below:
 | .travis.yml              | Used to configure Travis CI build                                                             |
 | .copyStaticAssets.ts     | Build script that copies images, fonts, and JS libs to the dist folder                        |
 | package.json             | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped)                          |
+| docker-compose.yml       | Docker PostgreSQL and Adminer images in case you want to load the db from Docker              |
 | tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
 | tslint.json              | Config settings for TSLint code style checking                                                |
+| ormconfig.json           | Config settings for TypeORM and DB connection                                                 |
 
 ## Configuring TypeScript compilation
 TypeScript uses the file `tsconfig.json` to adjust project compile options.
@@ -83,10 +105,13 @@ Let's dissect this project's `tsconfig.json`, starting with the `compilerOptions
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2017",
+        "lib": ["es6"],
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist",
-        "baseUrl": "."
+        "baseUrl": ".",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,  
         }
     },
 ```
@@ -95,10 +120,13 @@ Let's dissect this project's `tsconfig.json`, starting with the `compilerOptions
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `"module": "commonjs"`             | The **output** module type (in your `.js` files). Node uses commonjs, so that is what we use            |
 | `"target": "es2017"`               | The output language level. Node supports ES2017, so we can target that here                               |
+| `"lib": ["es6"]`                   | Needed for TypeORM.                                             |
 | `"moduleResolution": "node"`       | TypeScript attempts to mimic Node's module resolution strategy. Read more [here](https://www.typescriptlang.org/docs/handbook/module-resolution.html#node)                             |
 | `"sourceMap": true`                | We want source maps to be output along side our JavaScript.     |
 | `"outDir": "dist"`                 | Location to output `.js` files after compilation                |
 | `"baseUrl": "."`                   | Part of configuring module resolution.                          |
+| `"experimentalDecorators": true`   | Needed for TypeORM. Allows use of @Decorators                   |
+| `"emitDecoratorMetadata": true`    | Needed for TypeORM. Allows use of @Decorators                   |
 
 
 
@@ -205,9 +233,13 @@ In that file you'll find two sections:
 | ------------------------------- | --------------------------------------------------------------------- |
 | dotenv                          | Loads environment variables from .env file.                           |
 | koa                             | Node.js web framework.                                                |
-| koa-jwt                         | Middleware to validate JWT tokens                                     |
+| koa-bodyparser                  | A bodyparser for koa.                                                 |
+| koa-jwt                         | Middleware to validate JWT tokens.                                    |
 | koa-router                      | Router middleware for koa.                                            |
-| winston                         | Logging library                                                       |
+| pg                              | PostgreSQL driver, needed for the ORM                                 |
+| reflect-metadata                | Used by typeORM to implement decorators                               |
+| typeorm                         | A very cool SQL ORM.                                                  |
+| winston                         | Logging library.                                                      |
 
 ## `devDependencies`
 

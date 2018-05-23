@@ -1,7 +1,7 @@
 {
   "name": "node-typescript-koa-rest",
-  "version": "1.0.4",
-  "description": "API REST using NodeJS and KOA framework, typescript",
+  "version": "1.1.0",
+  "description": "API REST using NodeJS and KOA framework, typescript, SQL",
   "main": "dist/index.js",
   "scripts": {
     "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
@@ -22,7 +22,11 @@
     "jwt",
     "winston",
     "rest",
-    "starter"
+    "starter",
+    "typeORM",
+    "sql",
+    "api",
+    "rest"
   ],
   "repository": "github:javieraviles/node-typescript-koa-rest",
   "devDependencies": {
