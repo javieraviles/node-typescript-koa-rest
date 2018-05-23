@@ -27,6 +27,18 @@ router.get('/users', async (ctx) => {
     ctx.body = users;
 });
 
+router.get('/user/:id', async (ctx) => {
+
+    // get a user repository to perform operations with user
+    const userRepository = getManager().getRepository(User);
+
+    // load user by id
+    const user = await userRepository.findOne(ctx.params.id);
+
+    // return loaded user
+    ctx.body = user;
+});
+
 router.post('/user', async (ctx) => {
 
     // get a user repository to perform operations with user
@@ -35,7 +47,27 @@ router.post('/user', async (ctx) => {
     // save the user contained in the POST body
     const user = await userRepository.save(ctx.request.body);
 
+    // created status code
+    ctx.status = 201;
+
     // return the created user
+    ctx.body = user;
+});
+
+router.put('/user/:id', async (ctx) => {
+
+    // get a user repository to perform operations with user
+    const userRepository = getManager().getRepository(User);
+
+    // update the user by specified id
+    const userToUpdate = ctx.request.body;
+    userToUpdate.id = ctx.params.id;
+    const user = await userRepository.save(userToUpdate);
+
+    // created status code
+    ctx.status = 201;
+
+    // return the updated user
     ctx.body = user;
 });
 
