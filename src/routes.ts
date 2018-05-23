@@ -35,14 +35,24 @@ router.get('/user/:id', async (ctx) => {
     // load user by id
     const user = await userRepository.findOne(ctx.params.id);
 
-    // return loaded user
-    ctx.body = user;
+    if (user) {
+        // return loaded user
+        ctx.body = user;
+    } else {
+        // return a BAD REQUEST status code and error message
+        ctx.status = 400;
+        ctx.body = 'The user you are trying to retrieve doesn\'t exist in the db';
+    }
+
 });
 
 router.post('/user', async (ctx) => {
 
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
+
+    // OBVIOUSLY HERE WE WOULD VALIDATE THAT THE CTX.REQUEST.BODY IS A VALID USER OBJECT
+    // Maybe with class-validator?
 
     // save the user contained in the POST body
     const user = await userRepository.save(ctx.request.body);
@@ -59,16 +69,27 @@ router.put('/user/:id', async (ctx) => {
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
 
-    // update the user by specified id
-    const userToUpdate = ctx.request.body;
-    userToUpdate.id = ctx.params.id;
-    const user = await userRepository.save(userToUpdate);
+    // find the user by specified id
+    let userToUpdate = await userRepository.findOne(ctx.params.id);
+    if (userToUpdate) {
 
-    // created status code
-    ctx.status = 201;
+        // OBVIOUSLY HERE WE WOULD VALIDATE THAT THE CTX.REQUEST.BODY IS A VALID USER OBJECT
+        // Maybe with class-validator?
 
-    // return the updated user
-    ctx.body = user;
+        // update the user by specified id
+        userToUpdate = ctx.request.body;
+        userToUpdate.id = +ctx.params.id;
+        const user = await userRepository.save(userToUpdate);
+
+        // return created status code and updated user
+        ctx.status = 201;
+        ctx.body = user;
+    } else {
+        // return a BAD REQUEST status code and error message
+        ctx.status = 400;
+        ctx.body = 'The user you are trying to update doesn\'t exist in the db';
+    }
+
 });
 
 router.delete('/user/:id', async (ctx) => {
@@ -76,12 +97,19 @@ router.delete('/user/:id', async (ctx) => {
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
 
-    // find and remove the user by specified id
+    // find the user by specified id
     const userToRemove = await userRepository.findOne(ctx.params.id);
-    await userRepository.delete(userToRemove);
+    if (userToRemove) {
+        // the user is there so can be removed
+        await userRepository.remove(userToRemove);
+        // return a NO CONTENT status code
+        ctx.status = 204;
+    } else {
+        // return a BAD REQUEST status code and error message
+        ctx.status = 400;
+        ctx.body = 'The user you are trying to delete doesn\'t exist in the db';
+    }
 
-    // return a NO CONTENT status code
-    ctx.status = 204;
 });
 
 export const routes = router.routes();
