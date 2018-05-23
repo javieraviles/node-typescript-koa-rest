@@ -25,7 +25,7 @@ To build and run this app locally you will need:
  * Winston Logger
  * JWT Security koa-jwt
 
- ## Roadmap
+## Roadmap
  * I am thinking about getting on board "class-validator", to validate entities before persisting them to the DB. That would leave the CRUD perfectly working.
  * Also need to refactor "Routes.ts" and have one file just for the "user" CRUD.
 
