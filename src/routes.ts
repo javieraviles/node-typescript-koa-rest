@@ -4,10 +4,12 @@ import { User } from './entity/user';
 
 const router = new Router();
 
+// basic GET request
 router.get('/', async (ctx) => {
     ctx.body = 'Hello World!';
 });
 
+// silly endpoint to show where the payload data from the token gets stored
 router.get('/jwt', async (ctx) => {
     // example just to set a different status
     ctx.status = 201;
