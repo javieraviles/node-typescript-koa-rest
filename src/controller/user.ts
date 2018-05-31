@@ -1,6 +1,6 @@
 import { BaseContext } from 'koa';
 import { getManager, Repository } from 'typeorm';
-import { validate } from 'class-validator';
+import { validate, ValidationError } from 'class-validator';
 import { User } from '../entity/user';
 
 export default class UserController {
@@ -47,19 +47,19 @@ export default class UserController {
         userToBeSaved.email = ctx.request.body.email;
 
         // validate user entity
-        await validate(userToBeSaved).then(async errors => { // errors is an array of validation errors
-            if (errors.length > 0) {
-                // return bad request status code and errors array
-                ctx.status = 400;
-                ctx.body = errors;
-            } else {
-                // save the user contained in the POST body
-                const user = await userRepository.save(userToBeSaved);
-                // return created status code and updated user
-                ctx.status = 201;
-                ctx.body = user;
-            }
-        });
+        const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors
+
+        if (errors.length > 0) {
+            // return bad request status code and errors array
+            ctx.status = 400;
+            ctx.body = errors;
+        } else {
+            // save the user contained in the POST body
+            const user = await userRepository.save(userToBeSaved);
+            // return created status code and updated user
+            ctx.status = 201;
+            ctx.body = user;
+        }
     }
 
     public static async updateUser (ctx: BaseContext) {
@@ -77,19 +77,20 @@ export default class UserController {
             userToBeUpdated.email = ctx.request.body.email;
 
             // validate user entity
-            await validate(userToBeUpdated).then(async errors => { // errors is an array of validation errors
-                if (errors.length > 0) {
-                    // return bad request status code and errors array
-                    ctx.status = 400;
-                    ctx.body = errors;
-                } else {
-                    // save the user contained in the PUT body
-                    const user = await userRepository.save(userToBeUpdated);
-                    // return created status code and updated user
-                    ctx.status = 201;
-                    ctx.body = user;
-                }
-            });
+            const errors: ValidationError[] = await validate(userToBeUpdated); // errors is an array of validation errors
+
+            if (errors.length > 0) {
+                // return bad request status code and errors array
+                ctx.status = 400;
+                ctx.body = errors;
+            } else {
+                // save the user contained in the PUT body
+                const user = await userRepository.save(userToBeUpdated);
+                // return created status code and updated user
+                ctx.status = 201;
+                ctx.body = user;
+            }
+
         } else {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
