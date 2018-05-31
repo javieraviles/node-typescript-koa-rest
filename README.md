@@ -260,6 +260,14 @@ app.use(function(ctx, next){
 
 If you want to authenticate from the API, and you fancy the idea of an auth provider like Auth0, have a look at [jsonwebtoken — JSON Web Token signing and verification](https://github.com/auth0/node-jsonwebtoken)
 
+## Helmet
+This boilerplate uses koa-helmet is a wrapper for helmet to work with koa. It provides important security headers to make your app more secure by default. 
+
+Usage is the same as [helmet](https://github.com/helmetjs/helmet). Helmet offers 11 security middleware functions (clickjacking, DNS prefetching, Security Policy...), everything is set by default here.
+
+```
+app.use(helmet());
+```
 
 # Dependencies
 Dependencies are managed through `package.json`.
@@ -273,6 +281,7 @@ In that file you'll find two sections:
 | koa-bodyparser                  | A bodyparser for koa.                                                 |
 | koa-jwt                         | Middleware to validate JWT tokens.                                    |
 | koa-router                      | Router middleware for koa.                                            |
+| koa-helmet                      | Wrapper for helmet, important security headers to make app more secure| 
 | pg                              | PostgreSQL driver, needed for the ORM.                                |
 | reflect-metadata                | Used by typeORM to implement decorators.                              |
 | typeorm                         | A very cool SQL ORM.                                                  |
