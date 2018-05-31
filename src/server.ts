@@ -9,7 +9,8 @@ import 'reflect-metadata';
 import { User } from './entity/user';
 import { logger } from './logging';
 import { config } from './config';
-import { routes } from './routes';
+import { routes } from './route/routes';
+import { userRoutes } from './route/userRoutes';
 
 // create connection with database
 // note that its not active database connection
@@ -26,10 +27,14 @@ createConnection().then(async connection => {
 
     app.use(bodyParser());
 
+    // this routes are not protected by the JWT middleware
+    app.use(routes);
+
     // JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
     app.use(jwt({ secret: process.env.JWT_SECRET }));
 
-    app.use(routes);
+    // this routes are protected by the JWT middleware
+    app.use(userRoutes);
 
     app.listen(config.port);
 
