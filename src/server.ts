@@ -1,6 +1,7 @@
 import * as Koa from 'koa';
 import * as jwt from 'koa-jwt';
 import * as bodyParser from 'koa-bodyparser';
+import * as helmet from 'koa-helmet';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
 import { createConnection } from 'typeorm';
@@ -20,6 +21,9 @@ createConnection().then(async connection => {
 
     // Load environment variables from .env file, where API keys and passwords are configured
     dotenv.config({ path: '.env' });
+
+    // Provides important security headers to make your app more secure
+    app.use(helmet());
 
     // Logger middleware -> use winston as logger (logging.ts with config)
     app.use(logger(winston));
