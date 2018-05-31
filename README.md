@@ -17,6 +17,7 @@ To build and run this app locally you will need:
  * Nodemon - server auto-restarts when code changes
  * Koa v2
  * TypeORM (SQL DB) with basic CRUD included
+ * Class-validator - Decorator based entities validation
  * Docker-compose ready to go
 
 ## Included middleware:
@@ -57,7 +58,47 @@ This API is prepared to work with an SQL database, using [TypeORM](https://githu
 
 The ORM configuration and connection to the database is in the file 'ormconfig.json'.
 
+It is importante to notice that, when serving the project directly with *.ts files using ts-node, the ormconfig.json will work correctly, but once the project is built (transpiled) and run as plain js, it will be needed to change it in the ormconfig.js accordingly:
+```
+"entities": [
+      "dist/entity/**/*.js"
+   ],
+   "migrations": [
+      "dist/migration/**/*.js"
+   ],
+   "subscribers": [
+      "dist/subscriber/**/*.js"
+   ]
+```
+
 You can find an implemented CRUD of the entity user in routes.ts file.
+
+## Entities validation
+This project uses the library class-validator, a decorator-based entity validation, which is used directly in the entities files as follows:
+```
+export class User {
+    @Length(10, 100) // length of string email must be between 10 and 100 characters
+    @IsEmail() // the string must comply with an standard email format
+    @IsNotEmpty() // the string can't be empty
+    email: string;
+}
+```
+Once the decorators have been set in the entity, you can validate from anywhere as follows:
+```
+const user = new User();
+user.email = "avileslopez.javier@gmail"; // should not pass, needs the ending .com to be a valid email
+
+validate(user).then(errors => { // errors is an array of validation errors
+    if (errors.length > 0) {
+        console.log("validation failed. errors: ", errors); // code will get here, printing an "IsEmail" error
+    } else {
+        console.log("validation succeed");
+    }
+});
+```
+
+For further documentation regarding validations see [class-validator docs](https://github.com/typestack/class-validator).
+
 
 ## Environment variables
 Create a .env file (or just rename the .example.env) containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
@@ -236,10 +277,11 @@ In that file you'll find two sections:
 | koa-bodyparser                  | A bodyparser for koa.                                                 |
 | koa-jwt                         | Middleware to validate JWT tokens.                                    |
 | koa-router                      | Router middleware for koa.                                            |
-| pg                              | PostgreSQL driver, needed for the ORM                                 |
-| reflect-metadata                | Used by typeORM to implement decorators                               |
+| pg                              | PostgreSQL driver, needed for the ORM.                                |
+| reflect-metadata                | Used by typeORM to implement decorators.                              |
 | typeorm                         | A very cool SQL ORM.                                                  |
 | winston                         | Logging library.                                                      |
+| class-validator                 | Decorator based entities validation.                                  |
 
 ## `devDependencies`
 
