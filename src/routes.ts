@@ -1,5 +1,6 @@
 import * as Router from 'koa-router';
 import { getManager } from 'typeorm';
+import { validate } from 'class-validator';
 import { User } from './entity/user';
 
 const router = new Router();
@@ -53,17 +54,27 @@ router.post('/user', async (ctx) => {
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
 
-    // OBVIOUSLY HERE WE WOULD VALIDATE THAT THE CTX.REQUEST.BODY IS A VALID USER OBJECT
-    // Maybe with class-validator?
+    // build up entity user to be saved
+    const userToBeSaved: User = new User();
+    userToBeSaved.name = ctx.request.body.name;
+    userToBeSaved.email = ctx.request.body.email;
 
-    // save the user contained in the POST body
-    const user = await userRepository.save(ctx.request.body);
+    // validate user entity
+    await validate(userToBeSaved).then(async errors => { // errors is an array of validation errors
+        if (errors.length > 0) {
+            // created status code
+            ctx.status = 400;
+            // return the created user
+            ctx.body = errors;
+        } else {
+            // save the user contained in the POST body
+            const user = await userRepository.save(userToBeSaved);
+            // return created status code and updated user
+            ctx.status = 201;
+            ctx.body = user;
+        }
+    });
 
-    // created status code
-    ctx.status = 201;
-
-    // return the created user
-    ctx.body = user;
 });
 
 router.put('/user/:id', async (ctx) => {
@@ -71,21 +82,31 @@ router.put('/user/:id', async (ctx) => {
     // get a user repository to perform operations with user
     const userRepository = getManager().getRepository(User);
 
-    // find the user by specified id
-    let userToUpdate = await userRepository.findOne(ctx.params.id);
-    if (userToUpdate) {
-
-        // OBVIOUSLY HERE WE WOULD VALIDATE THAT THE CTX.REQUEST.BODY IS A VALID USER OBJECT
-        // Maybe with class-validator?
-
+    // check if a user with the specified id exists
+    if (await userRepository.findOne(ctx.params.id)) {
         // update the user by specified id
-        userToUpdate = ctx.request.body;
-        userToUpdate.id = +ctx.params.id;
-        const user = await userRepository.save(userToUpdate);
 
-        // return created status code and updated user
-        ctx.status = 201;
-        ctx.body = user;
+        // build up entity user to be updated
+        const userToBeUpdated: User = new User();
+        userToBeUpdated.id = +ctx.params.id;
+        userToBeUpdated.name = ctx.request.body.name;
+        userToBeUpdated.email = ctx.request.body.email;
+
+        // validate user entity
+        await validate(userToBeUpdated).then(async errors => { // errors is an array of validation errors
+            if (errors.length > 0) {
+                // created status code
+                ctx.status = 400;
+                // return the created user
+                ctx.body = errors;
+            } else {
+                // save the user contained in the PUT body
+                const user = await userRepository.save(userToBeUpdated);
+                // return created status code and updated user
+                ctx.status = 201;
+                ctx.body = user;
+            }
+        });
     } else {
         // return a BAD REQUEST status code and error message
         ctx.status = 400;
