@@ -1,7 +1,7 @@
 {
   "name": "node-typescript-koa-rest",
-  "version": "1.1.0",
-  "description": "API REST using NodeJS and KOA framework, typescript, SQL",
+  "version": "1.1.1",
+  "description": "API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT and Winston.",
   "main": "dist/index.js",
   "scripts": {
     "watch-server": "nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts",
@@ -24,6 +24,7 @@
     "rest",
     "starter",
     "typeORM",
+    "class-validator",
     "sql",
     "api",
     "rest"
@@ -45,6 +46,7 @@
     "typescript": "^2.8.3"
   },
   "dependencies": {
+    "class-validator": "^0.8.5",
     "dotenv": "^5.0.1",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
