@@ -24,7 +24,8 @@ To build and run this app locally you will need:
  * koa-router
  * koa-bodyparser
  * Winston Logger
- * JWT Security koa-jwt
+ * JWT auth koa-jwt
+ * Helmet (security headers)
 
 # Getting Started
 - Clone the repository
