@@ -1,6 +1,6 @@
 {
   "name": "node-typescript-koa-rest",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT and Winston.",
   "main": "dist/server.js",
   "scripts": {
@@ -25,6 +25,7 @@
     "starter",
     "typeORM",
     "class-validator",
+    "helmet",
     "sql",
     "api",
     "rest"
