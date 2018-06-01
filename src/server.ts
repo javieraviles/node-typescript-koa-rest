@@ -23,7 +23,7 @@ const connectionOptions = PostgressConnectionStringParser.parse(process.env.DATA
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
 createConnection({
-    type: process.env.TYPEORM_DRIVER_TYPE,
+    type: 'postgres',
     host: connectionOptions.host,
     port: connectionOptions.port,
     username: connectionOptions.user,
@@ -32,8 +32,11 @@ createConnection({
     synchronize: true,
     logging: false,
     entities: [
-       'src/entity/**/*.ts'
-    ]
+       'dist/entity/**/*.js'
+    ],
+    extra: {
+        ssl: true,
+    }
  }).then(async connection => {
 
     const app = new Koa();
