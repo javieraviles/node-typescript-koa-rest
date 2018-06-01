@@ -6,21 +6,37 @@ import * as winston from 'winston';
 import * as dotenv from 'dotenv';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
+import * as PostgressConnectionStringParser from 'pg-connection-string';
 
 import { User } from './entity/user';
 import { logger } from './logging';
 import { config } from './config';
 import { router } from './routes';
 
+// Load environment variables from .env file, where API keys and passwords are configured
+dotenv.config({ path: '.env' });
+
+// Get DB connection options from env variable
+const connectionOptions = PostgressConnectionStringParser.parse(process.env.DATABASE_URL);
+
 // create connection with database
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
-createConnection().then(async connection => {
+createConnection({
+    type: process.env.TYPEORM_DRIVER_TYPE,
+    host: connectionOptions.host,
+    port: connectionOptions.port,
+    username: connectionOptions.user,
+    password: connectionOptions.password,
+    database: connectionOptions.database,
+    synchronize: true,
+    logging: false,
+    entities: [
+       'src/entity/**/*.ts'
+    ]
+ }).then(async connection => {
 
     const app = new Koa();
-
-    // Load environment variables from .env file, where API keys and passwords are configured
-    dotenv.config({ path: '.env' });
 
     // Provides important security headers to make your app more secure
     app.use(helmet());
