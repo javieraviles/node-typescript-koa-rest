@@ -9,7 +9,11 @@ The main purpose of this repository is to build a good project setup and workflo
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
-This boilerplate is deploying in [Heroku](https://koa-typescript-boilerplate.herokuapp.com/)!
+Through a Travis-Heroku CI pipeline, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different endpoints defined (GET /, GET /jwt, GET /users, POST /user...) and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
+
+```
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
+```
 
 ## Pre-reqs
 To build and run this app locally you will need:
@@ -21,6 +25,7 @@ To build and run this app locally you will need:
  * TypeORM (SQL DB) with basic CRUD included
  * Class-validator - Decorator based entities validation
  * Docker-compose ready to go
+ * Travis CI - Heroku deployment prepared
 
 ## Included middleware:
  * koa-router
@@ -39,7 +44,12 @@ git clone --depth=1 https://github.com/javieraviles/node-typescript-koa-rest.git
 cd <project_name>
 npm install
 ```
-- Build and run the project
+- Run the project directly in TS
+```
+npm run watch-server
+```
+
+- Build and run the project in JS
 ```
 npm run build
 npm run start
@@ -55,9 +65,10 @@ If you use Docker natively, the host for the server which you will need to inclu
 ## Setting up the Database - ORM
 This API is prepared to work with an SQL database, using [TypeORM](https://github.com/typeorm/typeorm). In this case we are using postgreSQL, and that is why in the package.json 'pg' has been included. If you where to use a different SQL database remember to install the correspondent driver.
 
-The ORM configuration and connection to the database is in the file 'ormconfig.json'.
+The ORM configuration and connection to the database can be specified in the file 'ormconfig.json'. Here is directly in the connection to the database in 'server.ts' file because a environment variable containing databaseUrl is being used to set the connection data. This is prepared for Heroku, which provides a postgres-string-connection as env variable. In local is being mocked with the docker local postgres as can be seen in ".example.env"
 
-It is importante to notice that, when serving the project directly with *.ts files using ts-node, the ormconfig.json will work correctly, but once the project is built (transpiled) and run as plain js, it will be needed to change it in the ormconfig.js accordingly:
+It is importante to notice that, when serving the project directly with *.ts files using ts-node,the configuration for the ORM should specify the *.ts files path, but once the project is built (transpiled) and run as plain js, it will be needed to change it accordingly to find the built js files:
+
 ```
 "entities": [
       "dist/entity/**/*.js"
@@ -70,7 +81,18 @@ It is importante to notice that, when serving the project directly with *.ts fil
    ]
 ```
 
-You can find an implemented CRUD of the entity user in routes.ts file.
+Notice that if NODE_ENV is set to development, the ORM config won't be using SSL to connect to the DB. Otherwise it will.
+
+```
+createConnection({
+    ...
+    extra: {
+        ssl: config.DbSslConn, // if not development, will use SSL
+    }
+ })
+```
+
+You can find an implemented **CRUD of the entity user** in the correspondent controller controller/user.ts and its routes in routes.ts file.
 
 ## Entities validation
 This project uses the library class-validator, a decorator-based entity validation, which is used directly in the entities files as follows:
@@ -102,9 +124,10 @@ For further documentation regarding validations see [class-validator docs](https
 ## Environment variables
 Create a .env file (or just rename the .example.env) containing all the env variables you want to set, dotenv library will take care of setting them. This project is using three variables at the moment:
 
- * NODE_PORT -> port where the server will be started on
- * NODE_ENV -> environment, development value will set the logger as debug level, also important for CI
+ * PORT -> port where the server will be started on, Heroku will set this env variable automatically
+ * NODE_ENV -> environment, development value will set the logger as debug level, also important for CI. In addition will determine if the ORM connects to the DB through SSL or not.
  * JWT_SECRET -> secret value, JWT tokens should be signed with this value
+ * DATABASE_URL -> DB connection data in connection-string format.
 
 ## Getting TypeScript
 TypeScript itself is simple to add to any project with `npm`.
@@ -135,7 +158,7 @@ The full folder structure of this app is explained below:
 | docker-compose.yml       | Docker PostgreSQL and Adminer images in case you want to load the db from Docker              |
 | tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
 | tslint.json              | Config settings for TSLint code style checking                                                |
-| ormconfig.json           | Config settings for TypeORM and DB connection                                                 |
+| .example.env             | Env variables file example to be renamed to .env                                              |
 
 ## Configuring TypeScript compilation
 TypeScript uses the file `tsconfig.json` to adjust project compile options.
@@ -243,7 +266,7 @@ As can be found in the server.ts file, a JWT middleware has been added, passing 
 
 ```
 // JWT middleware -> below this line, routes are only reached if JWT token is valid, secret as env variable
-app.use(jwt({ secret: process.env.JWT_SECRET }));
+app.use(jwt({ secret: config.jwtSecret }));
 ```
 Go to the website [https://jwt.io/](https://jwt.io/) to create JWT tokens for testing/debugging purposes. Select algorithm HS256 and include the generated token in the Authorization header to pass through the jwt middleware.
 
@@ -290,6 +313,7 @@ In that file you'll find two sections:
 | typeorm                         | A very cool SQL ORM.                                                  |
 | winston                         | Logging library.                                                      |
 | class-validator                 | Decorator based entities validation.                                  |
+| pg-connection-string            | Parser for database connection string                                 |
 
 ## `devDependencies`
 
