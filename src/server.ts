@@ -15,7 +15,19 @@ import { router } from './routes';
 // create connection with database
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
-createConnection().then(async connection => {
+createConnection({
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'user',
+    password: 'pass',
+    database: 'apidb',
+    synchronize: true,
+    logging: false,
+    entities: [
+       'src/entity/**/*.ts'
+    ]
+ }).then(async connection => {
 
     const app = new Koa();
 
