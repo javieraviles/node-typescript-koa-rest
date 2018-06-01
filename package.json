@@ -10,7 +10,8 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "serve": "node dist/server.js",
     "build": "npm run tslint && npm run build-ts && npm run copy-static-assets",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "heroku-postbuild": "npm run build"
   },
   "author": "Javier Aviles",
   "license": "MIT",
