@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Length, IsEmail, IsNotEmpty } from 'class-validator';
+import { Length, IsEmail } from 'class-validator';
 
 @Entity()
 export class User {
@@ -9,7 +9,6 @@ export class User {
     @Column({
         length: 80
     })
-    @IsNotEmpty()
     @Length(10, 80)
     name: string;
 
@@ -18,6 +17,5 @@ export class User {
     })
     @Length(10, 100)
     @IsEmail()
-    @IsNotEmpty()
     email: string;
 }
