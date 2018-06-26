@@ -9,11 +9,24 @@ The main purpose of this repository is to build a good project setup and workflo
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
-Through a Travis-Heroku CI pipeline, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different endpoints defined (GET /, GET /jwt, GET /users, POST /user...) and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
+Through a Travis-Heroku CI pipeline, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
 
+HEADER
 ```
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
 ```
+
+AVAILABLE ENDPOINTS
+
+| method             | resource         | description                                                                                    |
+|:-------------------|:-----------------|:-----------------------------------------------------------------------------------------------|
+| `GET`              | `/`              | Simple hello world response                                                                    |
+| `GET`              | `/jwt`           | Dummy endpoint to show how JWT info gets stored in ctx.state                                   |
+| `GET`              | `/users`         | returns the collection of users present in the DB                                              |
+| `GET`              | `/users/:id`     | returns the specified id user                                                                  |
+| `POST`             | `/users`         | creates a user in the DB (object user to be includued in request's body)                       |
+| `PUT`              | `/users/:id`     | updates an already created user in the DB (object user to be includued in request's body)      |
+| `DELETE`           | `/users/:id`     | deletes a user from the DB (JWT token user ID must be the same as the user you want to delete) |
 
 ## Pre-reqs
 To build and run this app locally you will need:
@@ -33,6 +46,7 @@ To build and run this app locally you will need:
  * Winston Logger
  * JWT auth koa-jwt
  * Helmet (security headers)
+ * CORS
 
 # Getting Started
 - Clone the repository
@@ -286,14 +300,29 @@ app.use(function(ctx, next){
 
 If you want to authenticate from the API, and you fancy the idea of an auth provider like Auth0, have a look at [jsonwebtoken — JSON Web Token signing and verification](https://github.com/auth0/node-jsonwebtoken)
 
+
+## CORS
+This boilerplate uses @koa/cors, a simple CORS middleware for koa. If you are not sure what this is about, click [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+
+```
+// Enable CORS with default options
+app.use(cors());
+```
+Have a look at [Official @koa/cors docs](https://github.com/koajs/cors) in case you want to specify 'origin' or 'allowMethods' properties.
+
+
 ## Helmet
-This boilerplate uses koa-helmet is a wrapper for helmet to work with koa. It provides important security headers to make your app more secure by default. 
+This boilerplate uses koa-helmet, a wrapper for helmet to work with koa. It provides important security headers to make your app more secure by default. 
 
 Usage is the same as [helmet](https://github.com/helmetjs/helmet). Helmet offers 11 security middleware functions (clickjacking, DNS prefetching, Security Policy...), everything is set by default here.
 
 ```
+// Enable helmet with default options
 app.use(helmet());
 ```
+
+Have a look at [Official koa-helmet docs](https://github.com/venables/koa-helmet) in case you want to customize which security middlewares are enabled.
+
 
 # Dependencies
 Dependencies are managed through `package.json`.
@@ -308,12 +337,14 @@ In that file you'll find two sections:
 | koa-jwt                         | Middleware to validate JWT tokens.                                    |
 | koa-router                      | Router middleware for koa.                                            |
 | koa-helmet                      | Wrapper for helmet, important security headers to make app more secure| 
+| @koa/cors                       | Cross-Origin Resource Sharing(CORS) for koa                           |
 | pg                              | PostgreSQL driver, needed for the ORM.                                |
 | reflect-metadata                | Used by typeORM to implement decorators.                              |
 | typeorm                         | A very cool SQL ORM.                                                  |
 | winston                         | Logging library.                                                      |
 | class-validator                 | Decorator based entities validation.                                  |
 | pg-connection-string            | Parser for database connection string                                 |
+
 
 ## `devDependencies`
 
