@@ -1,5 +1,4 @@
 import * as Router from 'koa-router';
-import { getManager } from 'typeorm';
 import controller = require('./controller');
 
 const router = new Router();
@@ -10,9 +9,9 @@ router.get('/jwt', controller.general.getJwtPayload);
 
 // USER ROUTES
 router.get('/users', controller.user.getUsers);
-router.get('/user/:id', controller.user.getUser);
-router.post('/user', controller.user.createUser);
-router.put('/user/:id', controller.user.updateUser);
-router.delete('/user/:id', controller.user.deleteUser);
+router.get('/users/:id', controller.user.getUser);
+router.post('/users', controller.user.createUser);
+router.put('/users/:id', controller.user.updateUser);
+router.delete('/users/:id', controller.user.deleteUser);
 
 export { router };
