@@ -368,6 +368,7 @@ To install or update these dependencies you can use `npm install` or `npm update
 - Dotenv lib updated, no changes needed (they are dropping node4 support)
 - Class-validator lib updated, no chages needed (cool features added like IsPhoneNumber or custom context for decorators)
 - Winston lib updated to 3.0.0, some amendments needed to format the console log. Removed the @types as Winston now supports Typescript natively!
+- Some devDependencies updated as well
 
 ### 1.3.0
 - CORS added
