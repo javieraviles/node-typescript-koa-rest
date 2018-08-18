@@ -5,6 +5,7 @@
 [![Dependency Status](https://david-dm.org/javieraviles/node-typescript-koa-rest.svg)](https://david-dm.org/javieraviles/node-typescript-koa-rest)
 [![Build Status](https://travis-ci.org/javieraviles/node-typescript-koa-rest.svg?branch=develop)](https://travis-ci.org/javieraviles/node-typescript-koa-rest)
 
+
 The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA and an SQL DB.
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
@@ -27,6 +28,7 @@ AVAILABLE ENDPOINTS
 | `POST`             | `/users`         | creates a user in the DB (object user to be includued in request's body)                       |
 | `PUT`              | `/users/:id`     | updates an already created user in the DB (object user to be includued in request's body)      |
 | `DELETE`           | `/users/:id`     | deletes a user from the DB (JWT token user ID must be the same as the user you want to delete) |
+
 
 ## Pre-reqs
 To build and run this app locally you will need:
@@ -358,3 +360,23 @@ In that file you'll find two sections:
 | shelljs                         | Portable Unix shell commands for Node.js                              |
 
 To install or update these dependencies you can use `npm install` or `npm update`.
+
+
+## Changelog
+
+### 1.4.0
+- Dotenv lib updated, no changes needed (they are dropping node4 support)
+- Class-validator lib updated, no chages needed (cool features added like IsPhoneNumber or custom context for decorators)
+- Winston lib updated to 3.0.0, some amendments needed to format the console log. Removed the @types as Winston now supports Typescript natively!
+
+### 1.3.0
+- CORS added
+- Syntax full REST
+- Some error handling improvement
+
+### 1.2.0
+- Heroku deployment added
+
+### 1.1.0
+- Added Helmet for security
+- Some bad practices await/async fixed
