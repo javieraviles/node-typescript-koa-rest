@@ -364,6 +364,10 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 ## Changelog
 
+### 1.4.1
+- Fix -> After updating winston to 3.0.0, it was throwing an error when logging errors into file
+- Fix -> Config in config.ts wasn't implementing IConfig interface
+
 ### 1.4.0
 - Dotenv lib updated, no changes needed (they are dropping node4 support)
 - Class-validator lib updated, no chages needed (cool features added like IsPhoneNumber or custom context for decorators)
