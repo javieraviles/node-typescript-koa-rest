@@ -14,11 +14,9 @@ export function logger(winstonInstance) {
         let logLevel: string;
         if (ctx.status >= 500) {
             logLevel = 'error';
-        }
-        if (ctx.status >= 400) {
+        } else if (ctx.status >= 400) {
             logLevel = 'warn';
-        }
-        if (ctx.status >= 100) {
+        } else if (ctx.status >= 100) {
             logLevel = 'info';
         }
 
