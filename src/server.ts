@@ -4,7 +4,6 @@ import * as bodyParser from 'koa-bodyparser';
 import * as helmet from 'koa-helmet';
 import * as cors from '@koa/cors';
 import * as winston from 'winston';
-import * as dotenv from 'dotenv';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
@@ -12,9 +11,6 @@ import * as PostgressConnectionStringParser from 'pg-connection-string';
 import { logger } from './logging';
 import { config } from './config';
 import { router } from './routes';
-
-// Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: '.env' });
 
 // Get DB connection options from env variable
 const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
