@@ -364,6 +364,11 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 ## Changelog
 
+### 1.4.2
+ - Fix -> `npm run watch-server` is now working properly live-reloading changes in the code [Issue 39](https://github.com/javieraviles/node-typescript-koa-rest/issues/39).
+ - Fix -> Logging levels were not correctly mapped. Thanks to @atamano for the PR [Pull Request 35](https://github.com/javieraviles/node-typescript-koa-rest/pull/35)
+ - Some code leftovers removed
+
 ### 1.4.1
 - Fix -> After updating winston to 3.0.0, it was throwing an error when logging errors into file
 - Fix -> Config in config.ts wasn't implementing IConfig interface
