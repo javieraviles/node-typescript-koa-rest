@@ -1,16 +1,17 @@
-import * as Koa from 'koa';
-import * as jwt from 'koa-jwt';
-import * as bodyParser from 'koa-bodyparser';
-import * as helmet from 'koa-helmet';
-import * as cors from '@koa/cors';
-import * as winston from 'winston';
+import Koa from 'koa';
+import jwt from 'koa-jwt';
+import bodyParser from 'koa-bodyparser';
+import helmet from 'koa-helmet';
+import cors from '@koa/cors';
+import winston from 'winston';
 import { createConnection } from 'typeorm';
 import 'reflect-metadata';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
 
 import { logger } from './logging';
 import { config } from './config';
-import { router } from './routes';
+import { unprotectedRouter } from './unprotectedRoutes';
+import { protectedRouter } from './protectedRoutes';
 
 // Get DB connection options from env variable
 const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
@@ -33,7 +34,7 @@ createConnection({
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
     }
- }).then(async connection => {
+}).then(async connection => {
 
     const app = new Koa();
 
@@ -49,11 +50,15 @@ createConnection({
     // Enable bodyParser with default options
     app.use(bodyParser());
 
-    // JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
-    app.use(jwt({ secret: config.jwtSecret }));
+    // these routes are NOT protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
+    app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods());
 
-    // this routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
-    app.use(router.routes()).use(router.allowedMethods());
+    // JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
+    // do not protect swagger-json and swagger-html endpoints
+    app.use(jwt({ secret: config.jwtSecret }).unless({ path: [/^\/swagger-/] }));
+
+    // these routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
+    app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());
 
     app.listen(config.port);
 

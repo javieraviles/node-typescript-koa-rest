@@ -1,6 +1,6 @@
-import * as Koa from 'koa';
+import Koa from 'koa';
 import { config } from './config';
-import * as winston from 'winston';
+import winston from 'winston';
 
 export function logger(winstonInstance) {
     winstonInstance.configure({
