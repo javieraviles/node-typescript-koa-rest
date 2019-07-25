@@ -17,12 +17,11 @@ HEADER
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
 ```
 
-AVAILABLE ENDPOINTS
+AVAILABLE ENDPOINTS [SWAGGER DOCS](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
 
 | method             | resource         | description                                                                                    |
 |:-------------------|:-----------------|:-----------------------------------------------------------------------------------------------|
 | `GET`              | `/`              | Simple hello world response                                                                    |
-| `GET`              | `/jwt`           | Dummy endpoint to show how JWT info gets stored in ctx.state                                   |
 | `GET`              | `/users`         | returns the collection of users present in the DB                                              |
 | `GET`              | `/users/:id`     | returns the specified id user                                                                  |
 | `POST`             | `/users`         | creates a user in the DB (object user to be includued in request's body)                       |
@@ -38,6 +37,7 @@ To build and run this app locally you will need:
  * Nodemon - server auto-restarts when code changes
  * Koa v2
  * TypeORM (SQL DB) with basic CRUD included
+ * Swagger decorator (auto generated swagger docs)
  * Class-validator - Decorator based entities validation
  * Docker-compose ready to go
  * Travis CI - Heroku deployment prepared
@@ -346,6 +346,7 @@ In that file you'll find two sections:
 | winston                         | Logging library.                                                      |
 | class-validator                 | Decorator based entities validation.                                  |
 | pg-connection-string            | Parser for database connection string                                 |
+| koa-swagger-decorator           | using decorator to automatically generate swagger doc for koa-router  |
 
 
 ## `devDependencies`
@@ -363,6 +364,11 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 
 ## Changelog
+
+### 1.5.0
+ - koa-swagger-decorator -> generate [swagger docs](https://node-typescript-koa-rest.herokuapp.com/swagger-html) with decorators in the endpoints
+ - Split routes into protected and unprotected. Hello world + swagger docs are not proteted by jwt
+ - some dependencies have been updated
 
 ### 1.4.2
  - Fix -> `npm run watch-server` is now working properly live-reloading changes in the code [Issue 39](https://github.com/javieraviles/node-typescript-koa-rest/issues/39).
