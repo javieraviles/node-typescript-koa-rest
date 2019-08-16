@@ -28,9 +28,7 @@ createConnection({
     database: connectionOptions.database,
     synchronize: true,
     logging: false,
-    entities: [
-       'dist/entity/**/*.js'
-    ],
+    entities: config.dbEntitiesPath,
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
     }
