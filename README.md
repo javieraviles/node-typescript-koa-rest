@@ -12,12 +12,19 @@ Koa is a new web framework designed by the team behind Express, which aims to be
 
 Through a Travis-Heroku CI pipeline, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
 
-HEADER
+HEADER (DEMO)
 ```
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
 ```
 
-AVAILABLE ENDPOINTS [SWAGGER DOCS](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
+AVAILABLE ENDPOINTS DEMO [SWAGGER DOCS DEMO](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
+
+if you run your server locally with `watch-server` and your project `.env` file config as same as `.example.env` config, you can see the swagger docs here: `http:localhost:3000/swagger-html` and you should use below bearer token for authorization
+
+HEADER (LOCALHOST BASED ON DEFAULT SECRET KEY 'your-secret-whatever')
+```
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.rgOobROftUYSWphkdNfxoN2cgKiqNXd4Km4oz6Ex4ng
+```
 
 | method             | resource         | description                                                                                    |
 |:-------------------|:-----------------|:-----------------------------------------------------------------------------------------------|
