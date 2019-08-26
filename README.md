@@ -19,7 +19,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
 
 AVAILABLE ENDPOINTS DEMO [SWAGGER DOCS DEMO](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
 
-if you run your server locally with `watch-server` and your project `.env` file config as same as `.example.env` config, you can see the swagger docs here: `http:localhost:3000/swagger-html` and you should use below bearer token for authorization
+When running the project locally with `watch-server`, being `.env` file config the very same as `.example.env` file, the swagger docs will be deployed at: `http:localhost:3000/swagger-html`, and the bearer token for authorization should be as follows:
 
 HEADER (LOCALHOST BASED ON DEFAULT SECRET KEY 'your-secret-whatever')
 ```
