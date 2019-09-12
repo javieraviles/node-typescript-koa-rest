@@ -11,16 +11,16 @@ export interface IConfig {
     dbEntitiesPath: (Function | string)[];
 }
 
-const isInDevelompentMode = process.env.NODE_ENV == 'development';
+const isDevMode = process.env.NODE_ENV == 'development';
 
 const config: IConfig = {
     port: +process.env.PORT || 3000,
-    debugLogging: process.env.NODE_ENV == 'development',
-    dbsslconn: process.env.NODE_ENV != 'development',
+    debugLogging: isDevMode,
+    dbsslconn: !isDevMode,
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
     dbEntitiesPath: [
-      (isInDevelompentMode && 'dist/entity/**/*.js') || 'src/entity/**/*.ts'
+      ('dist/entity/**/*.js') || (isDevMode && 'src/entity/**/*.ts')
     ]
 };
 
