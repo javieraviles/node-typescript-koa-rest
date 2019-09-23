@@ -8,7 +8,7 @@ from locust import HttpLocust, TaskSet, task
 # Then url http://localhost:8089/ should be access to start the test.
 # Can also be run using no UI mode as "locust --no-web -c <number_of_clients> -r <clients_per_second> --run-time <time e.g. 1h30m> --host=http://<deployed_host>:<port>"
 
-jwt_token='Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImF2aWxlc2xvcGV6LmphdmllckBnbWFpbC5jb20ifQ.dFGGAwfZY4dxtCdx7DwIBBpAP2xB924sFKI9fZCIWIw'
+jwt_token='Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyNiIsIm5hbWUiOiJJbnRlZ3JhdGlvbiBUZXN0IFVzZXIiLCJlbWFpbCI6InVzZXJAaW50ZWdyYXRpb250ZXN0LmNvbSJ9.qP2b-YoBlahtXdlrnLJsq_um1fsWl56nrS5XHPafcD8'
 
 
 class UserBehavior(TaskSet):
