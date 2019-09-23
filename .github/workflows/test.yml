@@ -12,7 +12,10 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
-    - run: npm install -g newman
+    - name: Install dependencies
+      run: |
+        npm install -g newman
+        npm install
     - name: Building the project
       run: npm run build
     - name: Unit tests
@@ -23,6 +26,7 @@ jobs:
       with:
         python-version: '3.x'
         architecture: 'x64'
-    - run: python3 -m pip install locustio
+    - name: Install Locust
+      run: python3 -m pip install locustio
     - name: Load tests
       run: npm run test:load
