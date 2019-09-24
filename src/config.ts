@@ -23,7 +23,7 @@ const config: IConfig = {
     dbEntitiesPath: [
       ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
     ],
-    deleteTestUsersCronExpression: '* * * * *'
+    deleteTestUsersCronExpression: '0 0 * * *'
 };
 
 export { config };

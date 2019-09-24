@@ -68,7 +68,7 @@
 			"response": []
 		},
 		{
-			"name": "Create a user Copy",
+			"name": "Update a user",
 			"event": [
 				{
 					"listen": "test",
@@ -92,13 +92,13 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					},
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSW50ZWdyYXRpb24gVGVzdCBVc2VyIiwiZW1haWwiOiJ1c2VyQGludGVncmF0aW9udGVzdC5jb20ifQ.ep9UgP0Id_MLwSoMtJMycXT_e1on-ajA-j-aHIYRsw8",
-						"type": "text"
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSW50ZWdyYXRpb24gVGVzdCBVc2VyIiwiZW1haWwiOiJ1c2VyQGludGVncmF0aW9udGVzdC5jb20ifQ.ep9UgP0Id_MLwSoMtJMycXT_e1on-ajA-j-aHIYRsw8"
 					}
 				],
 				"body": {
@@ -110,6 +110,52 @@
 						}
 					}
 				},
+				"url": {
+					"raw": "https://node-typescript-koa-rest.herokuapp.com/users/{{userId}}",
+					"protocol": "https",
+					"host": [
+						"node-typescript-koa-rest",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3d18402-eb02-4ec5-a3b6-486af7a84f88",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User is created and can be fetched successfully\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.email).to.eql(\"user@integrationtest.com\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSW50ZWdyYXRpb24gVGVzdCBVc2VyIiwiZW1haWwiOiJ1c2VyQGludGVncmF0aW9udGVzdC5jb20ifQ.ep9UgP0Id_MLwSoMtJMycXT_e1on-ajA-j-aHIYRsw8",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "https://node-typescript-koa-rest.herokuapp.com/users/{{userId}}",
 					"protocol": "https",
@@ -161,52 +207,6 @@
 					],
 					"path": [
 						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "a3d18402-eb02-4ec5-a3b6-486af7a84f88",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"User is created and can be fetched successfully\", function () {",
-							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.email).to.eql(\"user@integrationtest.com\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSW50ZWdyYXRpb24gVGVzdCBVc2VyIiwiZW1haWwiOiJ1c2VyQGludGVncmF0aW9udGVzdC5jb20ifQ.ep9UgP0Id_MLwSoMtJMycXT_e1on-ajA-j-aHIYRsw8",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "https://node-typescript-koa-rest.herokuapp.com/users/{{userId}}",
-					"protocol": "https",
-					"host": [
-						"node-typescript-koa-rest",
-						"herokuapp",
-						"com"
-					],
-					"path": [
-						"users",
-						"{{userId}}"
 					]
 				}
 			},
