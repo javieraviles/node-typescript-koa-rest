@@ -1,27 +1,68 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:    
+      - develop
 
 jobs:
   build:
-
+    name: Build the project
     runs-on: ubuntu-16.04
-    
     steps:
-    - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
-    - name: Install dependencies
-      run: |
-        npm install -g newman
-        npm install
     - name: Building the project
       run: npm run build
     - name: Unit tests
       run: npm run test
+  
+  deploy_to_heroku:
+    name: Deploy to Heroku
+    runs-on: ubuntu-16.04
+    needs: build
+    steps:
+    - uses: actions/heroku@master
+      with:
+        args: container:login
+    - name: Login into Heroku
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - uses: actions/heroku@master
+      with:
+        args: container:push web
+    - name: Push to Heroku
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - uses: actions/heroku@master
+      with:
+        args: container:release web
+    - name: Trigger release in Heroku
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+
+  integration_tests:
+    name: Run integration tests
+    runs-on: ubuntu-16.04
+    needs: [build, deploy_to_heroku]
+    steps:
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install Newman
+      run: npm install -g newman
     - name: Integration Tests
       run: npm run test:integration
+
+  load_tests:
+    name: Run load tests
+    runs-on: ubuntu-16.04
+    needs: [build, deploy_to_heroku, integration_tests]
+    steps:
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
