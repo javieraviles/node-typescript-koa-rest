@@ -161,7 +161,7 @@ export default class UserController {
         const userRepository = getManager().getRepository(User);
 
         // find test users
-        const usersToRemove: User[] = await userRepository.find({ where: { email: Like("%@citest.com")} });
+        const usersToRemove: User[] = await userRepository.find({ where: { email: Like('%@citest.com')} });
 
         // the user is there so can be removed
         await userRepository.remove(usersToRemove);
