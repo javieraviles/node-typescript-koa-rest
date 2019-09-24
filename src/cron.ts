@@ -1,9 +1,8 @@
 import { CronJob } from 'cron';
 import { config } from './config';
-import controller = require('./controller');
 
-const deleteTestUsersCronJob = new CronJob(config.deleteTestUsersCronExpression, () => {
-    controller.user.deleteTestUsers();
+const cron = new CronJob(config.cronJobExpression, () => {
+    console.log('Executing cron job once every hour');
 });
 
-export { deleteTestUsersCronJob };
+export { cron };

@@ -36,6 +36,11 @@ class UserBehavior(TaskSet):
         assert r_update.status_code == HTTPStatus.CREATED, "Unexpected response code: " + \
             str(r_update.status_code)
 
+    def teardown(self):
+         headers = {'Authorization': jwt_token}
+         r = self.client.delete(
+            "/testusers", headers=headers)
+
     @task(1)
     def get_users(self):
         headers = {'Authorization': jwt_token}

@@ -12,7 +12,7 @@ import { logger } from './logging';
 import { config } from './config';
 import { unprotectedRouter } from './unprotectedRoutes';
 import { protectedRouter } from './protectedRoutes';
-import { deleteTestUsersCronJob } from './cron';
+import { cron } from './cron';
 
 // Get DB connection options from env variable
 const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
@@ -59,8 +59,8 @@ createConnection({
     // These routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
     app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());
 
-    // Register cron job to remove fake ci test users from db
-    deleteTestUsersCronJob.start();
+    // Register cron job to do any action needed
+    cron.start();
 
     app.listen(config.port);
 

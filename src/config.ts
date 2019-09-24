@@ -9,7 +9,7 @@ export interface IConfig {
     jwtSecret: string;
     databaseUrl: string;
     dbEntitiesPath: string[];
-    deleteTestUsersCronExpression: string;
+    cronJobExpression: string;
 }
 
 const isDevMode = process.env.NODE_ENV == 'development';
@@ -17,13 +17,13 @@ const isDevMode = process.env.NODE_ENV == 'development';
 const config: IConfig = {
     port: +process.env.PORT || 3000,
     debugLogging: isDevMode,
-    dbsslconn: !isDevMode,
+    dbsslconn: true,
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
     dbEntitiesPath: [
       ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
     ],
-    deleteTestUsersCronExpression: '0 0 * * *'
+    cronJobExpression: '0 * * * *'
 };
 
 export { config };
