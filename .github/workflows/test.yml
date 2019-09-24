@@ -14,6 +14,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
+    - name: Install dependencies
+      run: npm install
     - name: Building the project
       run: npm run build
     - name: Unit tests
@@ -51,6 +53,7 @@ jobs:
     runs-on: ubuntu-16.04
     needs: [build, deploy_to_heroku]
     steps:
+    - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
@@ -64,6 +67,7 @@ jobs:
     runs-on: ubuntu-16.04
     needs: [build, deploy_to_heroku, integration_tests]
     steps:
+    - uses: actions/checkout@master
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
