@@ -140,7 +140,7 @@
 							"",
 							"pm.test(\"User is created and can be fetched successfully\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.email).to.eql(\"user@integrationtest.com\");",
+							"    pm.expect(jsonData.email).to.eql(\"user@citest.com\");",
 							"});"
 						],
 						"type": "text/javascript"
