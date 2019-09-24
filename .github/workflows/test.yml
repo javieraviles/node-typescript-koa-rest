@@ -10,6 +10,7 @@ jobs:
     name: Build the project
     runs-on: ubuntu-16.04
     steps:
+    - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
