@@ -23,24 +23,24 @@ jobs:
     runs-on: ubuntu-16.04
     needs: build
     steps:
-    - uses: actions/heroku@master
+    - name: Login into Heroku
+      uses: actions/heroku@master
       with:
         args: container:login
-    - name: Login into Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_APP: ${{ secrets.HEROKU_APP }}
-    - uses: actions/heroku@master
+    - name: Push to Heroku
+      uses: actions/heroku@master
       with:
         args: container:push web
-    - name: Push to Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_APP: ${{ secrets.HEROKU_APP }}
-    - uses: actions/heroku@master
+    - name: Trigger release in Heroku
+      uses: actions/heroku@master
       with:
         args: container:release web
-    - name: Trigger release in Heroku
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         HEROKU_APP: ${{ secrets.HEROKU_APP }}
