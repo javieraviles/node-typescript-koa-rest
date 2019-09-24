@@ -1,5 +1,5 @@
 import { BaseContext } from 'koa';
-import { getManager, Repository, Not, Equal } from 'typeorm';
+import { getManager, Repository, Not, Equal, Like } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
 import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
 import { User, userSchema } from '../entity/user';
@@ -152,6 +152,19 @@ export default class UserController {
             // return a NO CONTENT status code
             ctx.status = 204;
         }
+
+    }
+
+    public static async deleteTestUsers() {
+
+        // get a user repository to perform operations with user
+        const userRepository = getManager().getRepository(User);
+
+        // find test users
+        const usersToRemove: User[] = await userRepository.find({ where: { email: Like("%@citest.com")} });
+
+        // the user is there so can be removed
+        await userRepository.remove(usersToRemove);
 
     }
 

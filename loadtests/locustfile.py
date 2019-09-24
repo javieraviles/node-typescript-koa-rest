@@ -18,7 +18,7 @@ class UserBehavior(TaskSet):
         name = ''.join(random.choice(string.ascii_lowercase) for i in range(10))
         user = {
             "name": name,
-            "email": name + "@loadtest.com"
+            "email": name + "@citest.com"
         }
         # CREATE USER
         r_create = self.client.post(

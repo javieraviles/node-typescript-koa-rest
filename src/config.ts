@@ -8,7 +8,8 @@ export interface IConfig {
     dbsslconn: boolean;
     jwtSecret: string;
     databaseUrl: string;
-    dbEntitiesPath: (Function | string)[];
+    dbEntitiesPath: string[];
+    deleteTestUsersCronExpression: string;
 }
 
 const isDevMode = process.env.NODE_ENV == 'development';
@@ -20,8 +21,9 @@ const config: IConfig = {
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
     dbEntitiesPath: [
-      ('dist/entity/**/*.js') || (isDevMode && 'src/entity/**/*.ts')
-    ]
+      ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
+    ],
+    deleteTestUsersCronExpression: '* * * * *'
 };
 
 export { config };

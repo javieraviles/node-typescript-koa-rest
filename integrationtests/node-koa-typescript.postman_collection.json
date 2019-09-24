@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "674ba891-4aa4-4b6b-94e1-7d69dfadf1b4",
+		"_postman_id": "e3798ac8-76cb-40aa-a412-3f5c853f7d01",
 		"name": "node-koa-typescript",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -45,7 +45,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Integration Test User\",\r\n\t\"email\": \"user@integrationtest.com\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Integration Test User\",\r\n\t\"email\": \"user@citest.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -103,7 +103,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Integration Test User Modified\",\r\n\t\"email\": \"user@integrationtest.com\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Integration Test User Modified\",\r\n\t\"email\": \"user@citest.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
