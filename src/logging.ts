@@ -20,11 +20,11 @@ export function logger(winstonInstance) {
 
     return async(ctx: Koa.Context, next: () => Promise<any>) => {
 
-        const start = new Date().getMilliseconds();
+        const start = new Date().getTime();
 
         await next();
 
-        const ms = new Date().getMilliseconds() - start;
+        const ms = new Date().getTime() - start;
 
         let logLevel: string;
         if (ctx.status >= 500) {

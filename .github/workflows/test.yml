@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  push:
+    branches:    
+      - develop
+
+jobs:
+  build:
+    name: Build the project
+    runs-on: ubuntu-16.04
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install dependencies
+      run: npm install
+    - name: Building the project
+      run: npm run build
+    - name: Unit tests
+      run: npm run test
+  
+  deploy_to_heroku:
+    name: Deploy to Heroku
+    runs-on: ubuntu-16.04
+    needs: build
+    steps:
+    - uses: actions/checkout@master
+    - name: Build docker image
+      uses: actions/docker/cli@master
+      with:
+        args: build -t $HEROKU_APP .
+      env:
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - name: Login into Heroku
+      uses: actions/heroku@master
+      with:
+        args: container:login
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - name: Push to Heroku
+      uses: actions/heroku@master
+      with:
+        args: container:push web
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+    - name: Trigger release in Heroku
+      uses: actions/heroku@master
+      with:
+        args: container:release web
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP: ${{ secrets.HEROKU_APP }}
+
+  integration_tests:
+    name: Run integration tests
+    runs-on: ubuntu-16.04
+    needs: [build, deploy_to_heroku]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install Newman
+      run: npm install -g newman
+    - name: Integration Tests
+      run: npm run test:integration
+
+  load_tests:
+    name: Run load tests
+    runs-on: ubuntu-16.04
+    needs: [build, deploy_to_heroku, integration_tests]
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+        architecture: 'x64'
+    - name: Install Locust
+      run: python3 -m pip install locustio
+    - name: Load tests
+      run: npm run test:load

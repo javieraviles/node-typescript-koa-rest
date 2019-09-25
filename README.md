@@ -3,21 +3,28 @@
 
 [![NPM version](https://img.shields.io/npm/v/node-typescript-koa-rest.svg)](https://www.npmjs.com/package/node-typescript-koa-rest)
 [![Dependency Status](https://david-dm.org/javieraviles/node-typescript-koa-rest.svg)](https://david-dm.org/javieraviles/node-typescript-koa-rest)
-[![Build Status](https://travis-ci.org/javieraviles/node-typescript-koa-rest.svg?branch=develop)](https://travis-ci.org/javieraviles/node-typescript-koa-rest)
+[![Actions Status](https://github.com/javieraviles/node-typescript-koa-rest/workflows/test/badge.svg)](https://github.com/javieraviles/node-typescript-koa-rest/actions)
 
 
 The main purpose of this repository is to build a good project setup and workflow for writing a Node api rest in TypeScript using KOA and an SQL DB.
 
 Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs. Through leveraging generators Koa allows you to ditch callbacks and greatly increase error-handling. Koa does not bundle any middleware within core, and provides an elegant suite of methods that make writing servers fast and enjoyable.
 
-Through a Travis-Heroku CI pipeline, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
+Through Github Actions CI, this boilerplate is deployed [here](https://node-typescript-koa-rest.herokuapp.com/)! You can try to make requests to the different defined endpoints and see how it works. The following Authorization header will have to be set (already signed with the boilerplate's secret) to pass the JWT middleware:
 
-HEADER
+HEADER (DEMO)
 ```
 Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.7oxEVGy4VEtaDQyLiuoDvzdO0AyrNrJ_s9NU3vko5-k
 ```
 
-AVAILABLE ENDPOINTS [SWAGGER DOCS](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
+AVAILABLE ENDPOINTS DEMO [SWAGGER DOCS DEMO](https://node-typescript-koa-rest.herokuapp.com/swagger-html)
+
+When running the project locally with `watch-server`, being `.env` file config the very same as `.example.env` file, the swagger docs will be deployed at: `http:localhost:3000/swagger-html`, and the bearer token for authorization should be as follows:
+
+HEADER (LOCALHOST BASED ON DEFAULT SECRET KEY 'your-secret-whatever')
+```
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2aWxlcyIsImVtYWlsIjoiYXZpbGVzbG9wZXouamF2aWVyQGdtYWlsLmNvbSJ9.rgOobROftUYSWphkdNfxoN2cgKiqNXd4Km4oz6Ex4ng
+```
 
 | method             | resource         | description                                                                                    |
 |:-------------------|:-----------------|:-----------------------------------------------------------------------------------------------|
@@ -27,6 +34,42 @@ AVAILABLE ENDPOINTS [SWAGGER DOCS](https://node-typescript-koa-rest.herokuapp.co
 | `POST`             | `/users`         | creates a user in the DB (object user to be includued in request's body)                       |
 | `PUT`              | `/users/:id`     | updates an already created user in the DB (object user to be includued in request's body)      |
 | `DELETE`           | `/users/:id`     | deletes a user from the DB (JWT token user ID must be the same as the user you want to delete) |
+
+- [Node - Koa - Typescript Project](#node---koa---typescript-project)
+  - [Pre-reqs](#pre-reqs)
+  - [Features:](#features)
+  - [Included middleware:](#included-middleware)
+- [Getting Started](#getting-started)
+  - [Docker (optional)](#docker-optional)
+  - [Setting up the Database - ORM](#setting-up-the-database---orm)
+  - [Entities validation](#entities-validation)
+  - [Environment variables](#environment-variables)
+  - [Getting TypeScript](#getting-typescript)
+  - [Project Structure](#project-structure)
+  - [Configuring TypeScript compilation](#configuring-typescript-compilation)
+  - [Running the build](#running-the-build)
+- [CI: Github Actions](#ci-github-actions)
+- [TSLint](#tslint)
+  - [TSLint rules](#tslint-rules)
+  - [Running TSLint](#running-tslint)
+- [Register cron jobs](#register-cron-jobs)
+- [Integrations and load tests](#integrations-and-load-tests)
+- [Logging](#logging)
+- [Authentication - Security](#authentication---security)
+  - [CORS](#cors)
+  - [Helmet](#helmet)
+- [Dependencies](#dependencies)
+  - [dependencies](#dependencies)
+  - [devDependencies](#devdependencies)
+  - [Changelog](#changelog)
+    - [1.6.0](#160)
+    - [1.5.0](#150)
+    - [1.4.2](#142)
+    - [1.4.1](#141)
+    - [1.4.0](#140)
+    - [1.3.0](#130)
+    - [1.2.0](#120)
+    - [1.1.0](#110)
 
 
 ## Pre-reqs
@@ -40,7 +83,10 @@ To build and run this app locally you will need:
  * Swagger decorator (auto generated swagger docs)
  * Class-validator - Decorator based entities validation
  * Docker-compose ready to go
- * Travis CI - Heroku deployment prepared
+ * Postman (newman) integration tests
+ * Locust load tests
+ * Github actions - CI for building and testing the project
+ * Cron jobs prepared
 
 ## Included middleware:
  * koa-router
@@ -71,6 +117,12 @@ npm run build
 npm run start
 ```
 
+- Run integration or load tests
+```
+npm run test:integration
+npm run test:load
+```
+
 ## Docker (optional)
 A docker-compose file has been added to the project with a postgreSQL (already setting user, pass and dbname as the ORM config is expecting) and an ADMINER image (easy web db client).
 
@@ -96,6 +148,8 @@ It is importante to notice that, when serving the project directly with *.ts fil
       "dist/subscriber/**/*.js"
    ]
 ```
+
+**NOTE: this is now automatically handled by the NODE_ENV variable too. 
 
 Notice that if NODE_ENV is set to development, the ORM config won't be using SSL to connect to the DB. Otherwise it will.
 
@@ -168,13 +222,16 @@ The full folder structure of this app is explained below:
 | **node_modules**         | Contains all your npm dependencies                                                            |
 | **src**                  | Contains your source code that will be compiled to the dist dir                               |
 | **src**/server.ts        | Entry point to your KOA app                                                                   |
-| .travis.yml              | Used to configure Travis CI build                                                             |
+| **.github**/**workflows**/test.yml | Github actions CI configuration                                                     |
+| **loadtests**/locustfile.py | Locust load tests                                                                          |
+| **integrationtests**/node-koa-typescript.postman_collection.json | Postman integration test collection                   |
 | .copyStaticAssets.ts     | Build script that copies images, fonts, and JS libs to the dist folder                        |
-| package.json             | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped)                          |
+| package.json             | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped) |
 | docker-compose.yml       | Docker PostgreSQL and Adminer images in case you want to load the db from Docker              |
 | tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
 | tslint.json              | Config settings for TSLint code style checking                                                |
 | .example.env             | Env variables file example to be renamed to .env                                              |
+| Dockerfile and dockerignore | The app is dockerized to be deployed from CI in a more standard way, not needed for dev    |
 
 ## Configuring TypeScript compilation
 TypeScript uses the file `tsconfig.json` to adjust project compile options.
@@ -242,6 +299,31 @@ Below is a list of all the scripts this template has available:
 | `build-ts`                | Compiles all source `.ts` files to `.js` files in the `dist` folder                               |
 | `tslint`                  | Runs TSLint on project files                                                                      |
 | `copy-static-assets`      | Calls script that copies JS libs, fonts, and images to dist directory                             |
+| `test:integration`        | Execute Postman integration tests collection using newman                                         |
+| `test:load`               | Execute Locust load tests using a specific configuration                                          |
+
+# CI: Github Actions
+Using Github Actions a pipeline is deploying the application in Heroku and running tests against it, checking the application is healthy deployed. The pipeline can be found at `/.github/workflows/test.yml`. This performs the following:
+ - Build the project
+   - Install Node
+   - Install dependencies
+   - Build the project (transpile to JS)
+   - Run unit tests
+ - Deploy to Heroku
+   - Install Docker cli
+   - Build the application container
+   - Install Heroku cli
+   - Login into Heroku
+   - Push Docker image to Heroku
+   - Trigger release in Heroku
+ - Run integration tests
+   - Install Node
+   - Install Newman
+   - Run Postman collection using Newman against deployed app in Heroku
+ - Run load tests
+   - Install Python
+   - Install Locust
+   - Run Locust load tests against deployed app in Heroku 
 
 # TSLint
 TSLint is a code linter which mainly helps catch minor code quality and style issues.
@@ -264,6 +346,34 @@ Notice that TSLint is not a part of the main watch task.
 It can be annoying for TSLint to clutter the output window while in the middle of writing a function, so I elected to only run it only during the full build.
 If you are interesting in seeing TSLint feedback as soon as possible, I strongly recommend the [TSLint extension in VS Code]().
 
+# Register cron jobs
+[Cron](https://github.com/node-cron/node-cron) dependency has been added to the project together with types. A `cron.ts` file has been created where a cron job is created using a cron expression configured in `config.ts` file. 
+
+```
+import { CronJob } from 'cron';
+import { config } from './config';
+
+const cron = new CronJob(config.cronJobExpression, () => {
+    console.log('Executing cron job once every hour');
+});
+
+export { cron };
+```
+
+From the `server.ts`, the cron job gets started:
+
+```
+import { cron } from './cron';
+// Register cron job to do any action needed
+cron.start();
+```
+
+# Integrations and load tests
+Integrations tests are a Postman collection with assertions, which gets executed using Newman from the CI (Github Actions). It can be found at `/integrationtests/node-koa-typescript.postman_collection.json`; it can be opened in Postman and get modified very easily.
+
+Load tests are a locust file with assertions, which gets executed from the CI (Github Actions). It can be found at `/loadtests/locustfile.py`; It is written in python and can be executed locally against any host once python and locust are installed on your dev machine.
+
+**NOTE: at the end of load tests, an endpoint to remove all created test users is called.
 
 # Logging
 Winston is designed to be a simple and universal logging library with support for multiple transports.
@@ -329,12 +439,12 @@ Have a look at [Official koa-helmet docs](https://github.com/venables/koa-helmet
 # Dependencies
 Dependencies are managed through `package.json`.
 In that file you'll find two sections:
-## `dependencies`
+## dependencies
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
 | dotenv                          | Loads environment variables from .env file.                           |
-| koa                             | Node.js web framework.                                                |
+| koa                             | Node web framework.                                                   |
 | koa-bodyparser                  | A bodyparser for koa.                                                 |
 | koa-jwt                         | Middleware to validate JWT tokens.                                    |
 | koa-router                      | Router middleware for koa.                                            |
@@ -345,11 +455,11 @@ In that file you'll find two sections:
 | typeorm                         | A very cool SQL ORM.                                                  |
 | winston                         | Logging library.                                                      |
 | class-validator                 | Decorator based entities validation.                                  |
-| pg-connection-string            | Parser for database connection string                                 |
-| koa-swagger-decorator           | using decorator to automatically generate swagger doc for koa-router  |
+| pg-connection-string            | Parser for database connection string.                                |
+| koa-swagger-decorator           | using decorator to automatically generate swagger doc for koa-router. |
+| cron                            | Register cron jobs in node.                                           |
 
-
-## `devDependencies`
+## devDependencies
 
 | Package                         | Description                                                           |
 | ------------------------------- | --------------------------------------------------------------------- |
@@ -364,6 +474,14 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 
 ## Changelog
+
+### 1.6.0
+ - CI migrated from Travis to Github actions
+ - cron dependency -> register cron jobs
+ - Node app dockerized -> now is directly pushed as a docker image to Heroku from CI, not using any webhook
+ - Added postman integration tests, executed from Github actions CI using Newman
+ - Added locust load tests, executed from Github actions CI
+ - PRs merged: [47](https://github.com/javieraviles/node-typescript-koa-rest/pull/47), [48](https://github.com/javieraviles/node-typescript-koa-rest/pull/48) and [49](https://github.com/javieraviles/node-typescript-koa-rest/pull/49). Thanks to everybody!
 
 ### 1.5.0
  - koa-swagger-decorator -> generate [swagger docs](https://node-typescript-koa-rest.herokuapp.com/swagger-html) with decorators in the endpoints

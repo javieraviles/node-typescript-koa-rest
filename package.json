@@ -1,6 +1,6 @@
 {
   "name": "node-typescript-koa-rest",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT, CORS, Winston Logger. Swagger API docs",
   "main": "dist/server.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "serve": "node dist/server.js",
     "build": "npm run tslint && npm run build-ts && npm run copy-static-assets",
     "start": "npm run serve",
-    "heroku-postbuild": "npm run build"
+    "test:integration": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/heroku-dev.postman_environment.json",
+    "test:load": "locust --no-web -c 50 -r 10 -f loadtests/locustfile.py --run-time 1m --host=https://node-typescript-koa-rest.herokuapp.com"
   },
   "engines": {
     "node": "10.x.x",
@@ -26,19 +27,19 @@
     "koa2",
     "jwt",
     "winston",
-    "rest",
-    "starter",
+    "boilerplate",
     "typeORM",
     "class-validator",
     "helmet",
     "sql",
-    "api",
-    "rest",
+    "api rest",
     "heroku",
-    "cors"
+    "cors",
+    "github actions"
   ],
   "repository": "github:javieraviles/node-typescript-koa-rest",
   "devDependencies": {
+    "@types/cron": "^1.7.1",
     "@types/dotenv": "^6.1.1",
     "@types/koa": "2.0.49",
     "@types/koa-bodyparser": "^4.3.0",
@@ -57,6 +58,7 @@
   "dependencies": {
     "@koa/cors": "^3.0.0",
     "class-validator": "^0.9.1",
+    "cron": "^1.7.2",
     "dotenv": "^8.0.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
