@@ -48,6 +48,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
   - [Project Structure](#project-structure)
   - [Configuring TypeScript compilation](#configuring-typescript-compilation)
   - [Running the build](#running-the-build)
+- [CI: Github Actions](#ci-github-actions)
 - [TSLint](#tslint)
   - [TSLint rules](#tslint-rules)
   - [Running TSLint](#running-tslint)
@@ -300,6 +301,29 @@ Below is a list of all the scripts this template has available:
 | `copy-static-assets`      | Calls script that copies JS libs, fonts, and images to dist directory                             |
 | `test:integration`        | Execute Postman integration tests collection using newman                                         |
 | `test:load`               | Execute Locust load tests using a specific configuration                                          |
+
+# CI: Github Actions
+Using Github Actions a pipeline is deploying the application in Heroku and running tests against it, checking the application is healthy deployed. The pipeline can be found at `/.github/workflows/test.yml`. This performs the following:
+ - Build the project
+   - Install Node
+   - Install dependencies
+   - Build the project (transpile to JS)
+   - Run unit tests
+ - Deploy to Heroku
+   - Install Docker cli
+   - Build the application container
+   - Install Heroku cli
+   - Login into Heroku
+   - Push Docker image to Heroku
+   - Trigger release in Heroku
+ - Run integration tests
+   - Install Node
+   - Install Newman
+   - Run Postman collection using Newman against deployed app in Heroku
+ - Run load tests
+   - Install Python
+   - Install Locust
+   - Run Locust load tests against deployed app in Heroku 
 
 # TSLint
 TSLint is a code linter which mainly helps catch minor code quality and style issues.
