@@ -17,7 +17,7 @@ const isDevMode = process.env.NODE_ENV == 'development';
 const config: IConfig = {
     port: +process.env.PORT || 3000,
     debugLogging: isDevMode,
-    dbsslconn: true,
+    dbsslconn: !isDevMode,
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
     dbEntitiesPath: [
