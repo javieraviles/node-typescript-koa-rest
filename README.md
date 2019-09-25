@@ -230,6 +230,7 @@ The full folder structure of this app is explained below:
 | tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
 | tslint.json              | Config settings for TSLint code style checking                                                |
 | .example.env             | Env variables file example to be renamed to .env                                              |
+| Dockerfile and dockerignore | The app is dockerized to be deployed from CI in a more standard way, not needed for dev    |
 
 ## Configuring TypeScript compilation
 TypeScript uses the file `tsconfig.json` to adjust project compile options.
@@ -453,9 +454,10 @@ To install or update these dependencies you can use `npm install` or `npm update
 ### 1.6.0
  - CI migrated from Travis to Github actions
  - cron dependency -> register cron jobs
+ - Node app dockerized -> now is directly pushed as a docker image to Heroku from CI, not using any webhook
  - Added postman integration tests, executed from Github actions CI using Newman
  - Added locust load tests, executed from Github actions CI
- - PRs [47](https://github.com/javieraviles/node-typescript-koa-rest/pull/47), [48](https://github.com/javieraviles/node-typescript-koa-rest/pull/48) and [49](https://github.com/javieraviles/node-typescript-koa-rest/pull/49) are merged
+ - PRs merged: [47](https://github.com/javieraviles/node-typescript-koa-rest/pull/47), [48](https://github.com/javieraviles/node-typescript-koa-rest/pull/48) and [49](https://github.com/javieraviles/node-typescript-koa-rest/pull/49). Thanks to everybody!
 
 ### 1.5.0
  - koa-swagger-decorator -> generate [swagger docs](https://node-typescript-koa-rest.herokuapp.com/swagger-html) with decorators in the endpoints
