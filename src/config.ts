@@ -20,9 +20,7 @@ const config: IConfig = {
     dbsslconn: !isDevMode,
     jwtSecret: process.env.JWT_SECRET || 'your-secret-whatever',
     databaseUrl: process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/apidb',
-    dbEntitiesPath: [
-      ... isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'],
-    ],
+    dbEntitiesPath: [...(isDevMode ? ['src/entity/**/*.ts'] : ['dist/entity/**/*.js'])],
     cronJobExpression: '0 * * * *'
 };
 

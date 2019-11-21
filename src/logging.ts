@@ -11,15 +11,13 @@ export function logger(winstonInstance) {
             new winston.transports.File({ filename: 'error.log', level: 'error' }),
             //
             // - Write to all logs with specified level to console.
-            new winston.transports.Console({ format: winston.format.combine(
-                winston.format.colorize(),
-                winston.format.simple()
-              ) })
+            new winston.transports.Console({
+                format: winston.format.combine(winston.format.colorize(), winston.format.simple())
+            })
         ]
     });
 
-    return async(ctx: Koa.Context, next: () => Promise<any>) => {
-
+    return async (ctx: Koa.Context, next: () => Promise<any>) => {
         const start = new Date().getTime();
 
         await next();

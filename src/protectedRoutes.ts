@@ -14,7 +14,8 @@ protectedRouter.delete('/testusers', controller.user.deleteTestUsers);
 // Swagger endpoint
 protectedRouter.swagger({
     title: 'node-typescript-koa-rest',
-    description: 'API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT, CORS, Winston Logger.',
+    description:
+        'API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT, CORS, Winston Logger.',
     version: '1.5.0'
 });
 
