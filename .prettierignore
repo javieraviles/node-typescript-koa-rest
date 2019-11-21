@@ -1,0 +1,23 @@
+public/**/*
+
+# Production
+build/**/*
+
+# Scripts
+scripts/**/*
+
+# Dependencies
+node_modules/*
+
+# Deployment Scripts
+scripts/*
+
+# IDE
+.idea/**/*
+
+# Testing & sonar
+coverage/**/*
+
+# Misc
+package.json
+package-lock.json
