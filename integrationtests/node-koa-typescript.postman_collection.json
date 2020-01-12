@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "70355a34-dfef-40c9-a968-52213ef97f2e",
+		"_postman_id": "f17eeed6-0468-4ff2-9636-8a105f98b7c6",
 		"name": "node-koa-typescript",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -474,6 +474,86 @@
 					],
 					"path": [
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user forbidden",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "13411841-ded9-4732-a497-8304b56ef036",
+						"exec": [
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"",
+							"pm.test(\"User can only be deleted by himself\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"A user can only be deleted by himself\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{jwtToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/users/fakeId",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"fakeId"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete created user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "326f52fa-5ee4-4d89-b353-23163fe20fde",
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwtToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/users/{{userId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users",
+						"{{userId}}"
 					]
 				}
 			},

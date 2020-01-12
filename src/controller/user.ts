@@ -141,7 +141,7 @@ export default class UserController {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
             ctx.body = 'The user you are trying to delete doesn\'t exist in the db';
-        } else if (+ctx.state.user.id !== userToRemove.id) {
+        } else if (ctx.state.user.email !== userToRemove.email) {
             // check user's token id and user id are the same
             // if not, return a FORBIDDEN status code and error message
             ctx.status = 403;
