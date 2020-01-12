@@ -504,18 +504,18 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "{{jwtToken}}",
+						"value": "{{secondaryJwtToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{url}}/users/fakeId",
+					"raw": "{{url}}/users/{{userId}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"users",
-						"fakeId"
+						"{{userId}}"
 					]
 				}
 			},
