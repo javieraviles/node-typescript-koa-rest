@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
     branches:    
-      - master
+      - develop
 
 jobs:
   build:
@@ -28,11 +28,10 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Build docker image
-      uses: actions/docker/cli@master
-      with:
-        args: build -t $HEROKU_APP .
       env:
         HEROKU_APP: ${{ secrets.HEROKU_APP }}
+      run:
+        docker build -t $HEROKU_APP .
     - name: Login into Heroku
       uses: actions/heroku@master
       with:
