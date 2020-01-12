@@ -59,9 +59,10 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
   - [CORS](#cors)
   - [Helmet](#helmet)
 - [Dependencies](#dependencies)
-  - [dependencies](#dependencies)
+  - [dependencies](#dependencies-1)
   - [devDependencies](#devdependencies)
   - [Changelog](#changelog)
+    - [1.6.1](#161)
     - [1.6.0](#160)
     - [1.5.0](#150)
     - [1.4.2](#142)
@@ -474,6 +475,10 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 
 ## Changelog
+
+### 1.6.1
+ - Fixing CI
+ - Improving integration tests robustness
 
 ### 1.6.0
  - CI migrated from Travis to Github actions
