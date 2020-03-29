@@ -2,7 +2,7 @@ import Koa from 'koa';
 import { config } from './config';
 import winston from 'winston';
 
-export function logger(winstonInstance) {
+export function logger(winstonInstance): any {
     winstonInstance.configure({
         level: config.debugLogging ? 'debug' : 'info',
         transports: [
@@ -18,7 +18,7 @@ export function logger(winstonInstance) {
         ]
     });
 
-    return async(ctx: Koa.Context, next: () => Promise<any>) => {
+    return async(ctx: Koa.Context, next: () => Promise<any>): Promise<void> => {
 
         const start = new Date().getTime();
 
@@ -35,7 +35,7 @@ export function logger(winstonInstance) {
             logLevel = 'info';
         }
 
-        const msg: string = `${ctx.method} ${ctx.originalUrl} ${ctx.status} ${ms}ms`;
+        const msg = `${ctx.method} ${ctx.originalUrl} ${ctx.status} ${ms}ms`;
 
         winstonInstance.log(logLevel, msg);
     };

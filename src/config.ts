@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
 
-export interface IConfig {
+export interface Config {
     port: number;
     debugLogging: boolean;
     dbsslconn: boolean;
@@ -14,7 +14,7 @@ export interface IConfig {
 
 const isDevMode = process.env.NODE_ENV == 'development';
 
-const config: IConfig = {
+const config: Config = {
     port: +process.env.PORT || 3000,
     debugLogging: isDevMode,
     dbsslconn: !isDevMode,
