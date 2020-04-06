@@ -49,9 +49,9 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
   - [Configuring TypeScript compilation](#configuring-typescript-compilation)
   - [Running the build](#running-the-build)
 - [CI: Github Actions](#ci-github-actions)
-- [TSLint](#tslint)
-  - [TSLint rules](#tslint-rules)
-  - [Running TSLint](#running-tslint)
+- [ESLint](#eslint)
+  - [ESLint rules](#eslint-rules)
+  - [Running ESLint](#running-eslint)
 - [Register cron jobs](#register-cron-jobs)
 - [Integrations and load tests](#integrations-and-load-tests)
 - [Logging](#logging)
@@ -62,6 +62,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
   - [dependencies](#dependencies-1)
   - [devDependencies](#devdependencies)
   - [Changelog](#changelog)
+    - [1.7.0](#170)
     - [1.6.1](#161)
     - [1.6.0](#160)
     - [1.5.0](#150)
@@ -218,21 +219,21 @@ The full folder structure of this app is explained below:
 > **Note!** Make sure you have already built the app using `npm run build`
 
 | Name | Description |
-| ------------------------ | --------------------------------------------------------------------------------------------- |
-| **dist**                 | Contains the distributable (or output) from your TypeScript build. This is the code you ship  |
-| **node_modules**         | Contains all your npm dependencies                                                            |
-| **src**                  | Contains your source code that will be compiled to the dist dir                               |
-| **src**/server.ts        | Entry point to your KOA app                                                                   |
-| **.github**/**workflows**/test.yml | Github actions CI configuration                                                     |
-| **loadtests**/locustfile.py | Locust load tests                                                                          |
-| **integrationtests**/node-koa-typescript.postman_collection.json | Postman integration test collection                   |
-| .copyStaticAssets.ts     | Build script that copies images, fonts, and JS libs to the dist folder                        |
-| package.json             | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped) |
-| docker-compose.yml       | Docker PostgreSQL and Adminer images in case you want to load the db from Docker              |
-| tsconfig.json            | Config settings for compiling server code written in TypeScript                               |
-| tslint.json              | Config settings for TSLint code style checking                                                |
-| .example.env             | Env variables file example to be renamed to .env                                              |
-| Dockerfile and dockerignore | The app is dockerized to be deployed from CI in a more standard way, not needed for dev    |
+| ----------------------------------- | --------------------------------------------------------------------------------------------- |
+| **dist**                            | Contains the distributable (or output) from your TypeScript build. This is the code you ship  |
+| **node_modules**                    | Contains all your npm dependencies                                                            |
+| **src**                             | Contains your source code that will be compiled to the dist dir                               |
+| **src**/server.ts                   | Entry point to your KOA app                                                                   |
+| **.github**/**workflows**/test.yml  | Github actions CI configuration                                                               |
+| **loadtests**/locustfile.py         | Locust load tests                                                                             |
+| **integrationtests**/node-koa-typescript.postman_collection.json | Postman integration test collection                              |
+| .copyStaticAssets.ts                | Build script that copies images, fonts, and JS libs to the dist folder                        |
+| package.json                        | File that contains npm dependencies as well as [build scripts](#what-if-a-library-isnt-on-definitelytyped) |
+| docker-compose.yml                  | Docker PostgreSQL and Adminer images in case you want to load the db from Docker              |
+| tsconfig.json                       | Config settings for compiling server code written in TypeScript                               |
+| .eslintrc.js and .eslintignore      | Config settings for ESLint code style checking                                                |
+| .example.env                        | Env variables file example to be renamed to .env                                              |
+| Dockerfile and dockerignore         | The app is dockerized to be deployed from CI in a more standard way, not needed for dev       |
 
 ## Configuring TypeScript compilation
 TypeScript uses the file `tsconfig.json` to adjust project compile options.
@@ -294,11 +295,12 @@ Below is a list of all the scripts this template has available:
 | Npm Script | Description |
 | ------------------------- | ------------------------------------------------------------------------------------------------- |
 | `start`                   | Does the same as 'npm run serve'. Can be invoked with `npm start`                                 |
-| `build`                   | Full build. Runs ALL build tasks (`build-ts`, `tslint`, `copy-static-assets`)                     |
+| `build`                   | Full build. Runs ALL build tasks (`build-ts`, `format:check`, `copy-static-assets`)               |
 | `serve`                   | Runs node on `dist/server/server.js` which is the apps entry point                                |
 | `watch-server`            | Nodemon, process restarts if crashes. Continuously watches `.ts` files and re-compiles to `.js`   |
 | `build-ts`                | Compiles all source `.ts` files to `.js` files in the `dist` folder                               |
-| `tslint`                  | Runs TSLint on project files                                                                      |
+| `format:check`            | Runs ESLint format check on project files                                                         |
+| `format:fix`              | Runs ESLint format fix on project files                                                           |
 | `copy-static-assets`      | Calls script that copies JS libs, fonts, and images to dist directory                             |
 | `test:integration`        | Execute Postman integration tests collection using newman                                         |
 | `test:load`               | Execute Locust load tests using a specific configuration                                          |
@@ -326,26 +328,26 @@ Using Github Actions a pipeline is deploying the application in Heroku and runni
    - Install Locust
    - Run Locust load tests against deployed app in Heroku 
 
-# TSLint
-TSLint is a code linter which mainly helps catch minor code quality and style issues.
-TSLint is very similar to ESLint or JSLint but is built with TypeScript in mind.
+# ESLint
+Since TSLint is deprecated now, ESLint feels like the way to go as also supports typescript. 
+ESLint is a static code analysis tool for identifying problematic patterns found in JavaScript/typescript code.
 
-## TSLint rules
-Like most linters, TSLint has a wide set of configurable rules as well as support for custom rule sets.
-All rules are configured through `tslint.json`.
+## ESLint rules
+Like most linters, ESLint has a wide set of configurable rules as well as support for custom rule sets.
+All rules are configured through `.eslintrc.js`.
 In this project, we are using a fairly basic set of rules with no additional custom rules.
-The settings are largely based off the TSLint settings that we use to develop TypeScript itself.
 
-## Running TSLint
-Like the rest of our build steps, we use npm scripts to invoke TSLint.
-To run TSLint you can call the main build script or just the TSLint task.
+## Running ESLint
+Like the rest of our build steps, we use npm scripts to invoke ESLint.
+To run ESLint you can call the main build script or just the ESLint task.
 ```
-npm run build   // runs full build including TSLint
-npm run tslint  // runs only TSLint
+npm run build   // runs full build including ESLint format check
+npm run format:check  // runs ESLint check
+npm run format:fix  // runs ESLint check + fix
 ```
-Notice that TSLint is not a part of the main watch task.
-It can be annoying for TSLint to clutter the output window while in the middle of writing a function, so I elected to only run it only during the full build.
-If you are interesting in seeing TSLint feedback as soon as possible, I strongly recommend the [TSLint extension in VS Code]().
+Notice that ESLint is not a part of the main watch task.
+It can be annoying for ESLint to clutter the output window while in the middle of writing a function, so I elected to only run it only during the full build.
+If you are interested in seeing ESLint feedback as soon as possible, I strongly recommend the [ESLint extension in VS Code](https://github.com/Microsoft/vscode-eslint.git).
 
 # Register cron jobs
 [Cron](https://github.com/node-cron/node-cron) dependency has been added to the project together with types. A `cron.ts` file has been created where a cron job is created using a cron expression configured in `config.ts` file. 
@@ -467,7 +469,7 @@ In that file you'll find two sections:
 | @types                          | Dependencies in this folder are `.d.ts` files used to provide types   |
 | nodemon                         | Utility that automatically restarts node process when it crashes      |
 | ts-node                         | Enables directly running TS files. Used to run `copy-static-assets.ts`|
-| tslint                          | Linter (similar to ESLint) for TypeScript files                       |
+| eslint                          | Linter for Javascript/TypeScript files                                |
 | typescript                      | JavaScript compiler/type checker that boosts JavaScript productivity  |
 | shelljs                         | Portable Unix shell commands for Node.js                              |
 
@@ -475,6 +477,9 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 
 ## Changelog
+
+### 1.7.0
+ - Migrating `TSLint` (deprecated already) to `ESLint`
 
 ### 1.6.1
  - Fixing CI

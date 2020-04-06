@@ -33,7 +33,7 @@ createConnection({
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
     }
-}).then(async connection => {
+}).then(async (connection) => {
 
     const app = new Koa();
 
