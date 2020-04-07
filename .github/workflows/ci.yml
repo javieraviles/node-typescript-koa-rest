@@ -13,9 +13,9 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.x'
+        node-version: '12.x'
     - name: Install dependencies
-      run: npm install
+      run: npm ci
     - name: Building the project
       run: npm run build
     - name: Unit tests
@@ -62,11 +62,11 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-node@v1
       with:
-        node-version: '10.x'
+        node-version: '12.x'
     - name: Install Newman
       run: npm install -g newman
     - name: Integration Tests
-      run: npm run test:integration
+      run: npm run test:integration:heroku
 
   load_tests:
     name: Run load tests

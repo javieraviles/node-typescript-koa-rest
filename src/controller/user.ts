@@ -1,15 +1,15 @@
-import { BaseContext } from 'koa';
-import { getManager, Repository, Not, Equal, Like } from 'typeorm';
-import { validate, ValidationError } from 'class-validator';
-import { request, summary, path, body, responsesAll, tagsAll } from 'koa-swagger-decorator';
-import { User, userSchema } from '../entity/user';
+import { BaseContext } from "koa";
+import { getManager, Repository, Not, Equal, Like } from "typeorm";
+import { validate, ValidationError } from "class-validator";
+import { request, summary, path, body, responsesAll, tagsAll } from "koa-swagger-decorator";
+import { User, userSchema } from "../entity/user";
 
-@responsesAll({ 200: { description: 'success'}, 400: { description: 'bad request'}, 401: { description: 'unauthorized, missing/wrong jwt token'}})
-@tagsAll(['User'])
+@responsesAll({ 200: { description: "success"}, 400: { description: "bad request"}, 401: { description: "unauthorized, missing/wrong jwt token"}})
+@tagsAll(["User"])
 export default class UserController {
 
-    @request('get', '/users')
-    @summary('Find all users')
+    @request("get", "/users")
+    @summary("Find all users")
     public static async getUsers(ctx: BaseContext): Promise<void> {
 
         // get a user repository to perform operations with user
@@ -23,10 +23,10 @@ export default class UserController {
         ctx.body = users;
     }
 
-    @request('get', '/users/{id}')
-    @summary('Find user by id')
+    @request("get", "/users/{id}")
+    @summary("Find user by id")
     @path({
-        id: { type: 'number', required: true, description: 'id of user' }
+        id: { type: "number", required: true, description: "id of user" }
     })
     public static async getUser(ctx: BaseContext): Promise<void> {
 
@@ -34,7 +34,7 @@ export default class UserController {
         const userRepository: Repository<User> = getManager().getRepository(User);
 
         // load user by id
-        const user: User = await userRepository.findOne(+ctx.params.id || 0);
+        const user: User | undefined = await userRepository.findOne(+ctx.params.id || 0);
 
         if (user) {
             // return OK status code and loaded user object
@@ -43,13 +43,13 @@ export default class UserController {
         } else {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
-            ctx.body = 'The user you are trying to retrieve doesn\'t exist in the db';
+            ctx.body = "The user you are trying to retrieve doesn't exist in the db";
         }
 
     }
 
-    @request('post', '/users')
-    @summary('Create a user')
+    @request("post", "/users")
+    @summary("Create a user")
     @body(userSchema)
     public static async createUser(ctx: BaseContext): Promise<void> {
 
@@ -71,7 +71,7 @@ export default class UserController {
         } else if (await userRepository.findOne({ email: userToBeSaved.email })) {
             // return BAD REQUEST status code and email already exists error
             ctx.status = 400;
-            ctx.body = 'The specified e-mail address already exists';
+            ctx.body = "The specified e-mail address already exists";
         } else {
             // save the user contained in the POST body
             const user = await userRepository.save(userToBeSaved);
@@ -81,10 +81,10 @@ export default class UserController {
         }
     }
 
-    @request('put', '/users/{id}')
-    @summary('Update a user')
+    @request("put", "/users/{id}")
+    @summary("Update a user")
     @path({
-        id: { type: 'number', required: true, description: 'id of user' }
+        id: { type: "number", required: true, description: "id of user" }
     })
     @body(userSchema)
     public static async updateUser(ctx: BaseContext): Promise<void> {
@@ -110,11 +110,11 @@ export default class UserController {
             // check if a user with the specified id exists
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
-            ctx.body = 'The user you are trying to update doesn\'t exist in the db';
+            ctx.body = "The user you are trying to update doesn't exist in the db";
         } else if (await userRepository.findOne({ id: Not(Equal(userToBeUpdated.id)), email: userToBeUpdated.email })) {
             // return BAD REQUEST status code and email already exists error
             ctx.status = 400;
-            ctx.body = 'The specified e-mail address already exists';
+            ctx.body = "The specified e-mail address already exists";
         } else {
             // save the user contained in the PUT body
             const user = await userRepository.save(userToBeUpdated);
@@ -125,10 +125,10 @@ export default class UserController {
 
     }
 
-    @request('delete', '/users/{id}')
-    @summary('Delete user by id')
+    @request("delete", "/users/{id}")
+    @summary("Delete user by id")
     @path({
-        id: { type: 'number', required: true, description: 'id of user' }
+        id: { type: "number", required: true, description: "id of user" }
     })
     public static async deleteUser(ctx: BaseContext): Promise<void> {
 
@@ -136,16 +136,16 @@ export default class UserController {
         const userRepository = getManager().getRepository(User);
 
         // find the user by specified id
-        const userToRemove: User = await userRepository.findOne(+ctx.params.id || 0);
+        const userToRemove: User | undefined = await userRepository.findOne(+ctx.params.id || 0);
         if (!userToRemove) {
             // return a BAD REQUEST status code and error message
             ctx.status = 400;
-            ctx.body = 'The user you are trying to delete doesn\'t exist in the db';
+            ctx.body = "The user you are trying to delete doesn't exist in the db";
         } else if (ctx.state.user.email !== userToRemove.email) {
             // check user's token id and user id are the same
             // if not, return a FORBIDDEN status code and error message
             ctx.status = 403;
-            ctx.body = 'A user can only be deleted by himself';
+            ctx.body = "A user can only be deleted by himself";
         } else {
             // the user is there so can be removed
             await userRepository.remove(userToRemove);
@@ -155,15 +155,15 @@ export default class UserController {
 
     }
 
-    @request('delete', '/testusers')
-    @summary('Delete users generated by integration and load tests')
+    @request("delete", "/testusers")
+    @summary("Delete users generated by integration and load tests")
     public static async deleteTestUsers(ctx: BaseContext): Promise<void> {
 
         // get a user repository to perform operations with user
         const userRepository = getManager().getRepository(User);
 
         // find test users
-        const usersToRemove: User[] = await userRepository.find({ where: { email: Like('%@citest.com')} });
+        const usersToRemove: User[] = await userRepository.find({ where: { email: Like("%@citest.com")} });
 
         // the user is there so can be removed
         await userRepository.remove(usersToRemove);
