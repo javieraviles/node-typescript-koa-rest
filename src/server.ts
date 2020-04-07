@@ -1,39 +1,31 @@
-import Koa from 'koa';
-import jwt from 'koa-jwt';
-import bodyParser from 'koa-bodyparser';
-import helmet from 'koa-helmet';
-import cors from '@koa/cors';
-import winston from 'winston';
-import { createConnection } from 'typeorm';
-import 'reflect-metadata';
-import * as PostgressConnectionStringParser from 'pg-connection-string';
+import Koa from "koa";
+import jwt from "koa-jwt";
+import bodyParser from "koa-bodyparser";
+import helmet from "koa-helmet";
+import cors from "@koa/cors";
+import winston from "winston";
+import { createConnection } from "typeorm";
+import "reflect-metadata";
 
-import { logger } from './logging';
-import { config } from './config';
-import { unprotectedRouter } from './unprotectedRoutes';
-import { protectedRouter } from './protectedRoutes';
-import { cron } from './cron';
-
-// Get DB connection options from env variable
-const connectionOptions = PostgressConnectionStringParser.parse(config.databaseUrl);
+import { logger } from "./logger";
+import { config } from "./config";
+import { unprotectedRouter } from "./unprotectedRoutes";
+import { protectedRouter } from "./protectedRoutes";
+import { cron } from "./cron";
 
 // create connection with database
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
 createConnection({
-    type: 'postgres',
-    host: connectionOptions.host,
-    port: connectionOptions.port,
-    username: connectionOptions.user,
-    password: connectionOptions.password,
-    database: connectionOptions.database,
+    type: "postgres",
+    url: config.databaseUrl,
     synchronize: true,
     logging: false,
     entities: config.dbEntitiesPath,
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
     }
-}).then(async connection => {
+}).then(async () => {
 
     const app = new Koa();
 
@@ -66,4 +58,4 @@ createConnection({
 
     console.log(`Server running on port ${config.port}`);
 
-}).catch(error => console.log('TypeORM connection error: ', error));
+}).catch((error: string) => console.log("TypeORM connection error: ", error));
