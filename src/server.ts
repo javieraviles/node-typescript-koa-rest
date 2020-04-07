@@ -6,7 +6,6 @@ import cors from "@koa/cors";
 import winston from "winston";
 import { createConnection } from "typeorm";
 import "reflect-metadata";
-import { ConnectionOptions, parse } from "pg-connection-string";
 
 import { logger } from "./logger";
 import { config } from "./config";
@@ -14,19 +13,12 @@ import { unprotectedRouter } from "./unprotectedRoutes";
 import { protectedRouter } from "./protectedRoutes";
 import { cron } from "./cron";
 
-// Get DB connection options from env variable
-const connectionOptions: ConnectionOptions = parse(config.databaseUrl);
-
 // create connection with database
 // note that its not active database connection
 // TypeORM creates you connection pull to uses connections from pull on your requests
 createConnection({
     type: "postgres",
-    host: connectionOptions.host || "",
-    port: +(connectionOptions.port || ""),
-    username: connectionOptions.user || "",
-    password: connectionOptions.password || "",
-    database: connectionOptions.database || "",
+    url: config.databaseUrl,
     synchronize: true,
     logging: false,
     entities: config.dbEntitiesPath,

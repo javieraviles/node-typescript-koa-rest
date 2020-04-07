@@ -459,7 +459,6 @@ In that file you'll find two sections:
 | typeorm                         | A very cool SQL ORM.                                                  |
 | winston                         | Logging library.                                                      |
 | class-validator                 | Decorator based entities validation.                                  |
-| pg-connection-string            | Parser for database connection string.                                |
 | koa-swagger-decorator           | using decorator to automatically generate swagger doc for koa-router. |
 | cron                            | Register cron jobs in node.                                           |
 

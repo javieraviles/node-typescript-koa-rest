@@ -67,8 +67,7 @@
     "koa-jwt": "^3.6.0",
     "@koa/router": "^8.0.8",
     "koa-swagger-decorator": "^1.5.16",
-    "pg": "^8.0.0",
-    "pg-connection-string": "^2.2.0",
+    "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.24",
     "winston": "^3.2.1"
