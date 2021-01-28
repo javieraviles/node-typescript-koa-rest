@@ -86,6 +86,7 @@ To build and run this app locally you will need:
  * Docker-compose ready to go
  * Postman (newman) integration tests
  * Locust load tests
+ * Jest unit tests
  * Github actions - CI for building and testing the project
  * Cron jobs prepared
 
@@ -122,6 +123,21 @@ npm run start
 ```
 npm run test:integration:local (newman needed)
 npm run test:load (locust needed)
+```
+
+- Run unit tests
+```
+npm run test
+```
+
+- Run unit tests with coverage 
+```
+npm run test:coverage
+```
+
+- Run unit tests on Jest watch mode
+```
+npm run test:watch
 ```
 
 ## Docker (optional)
