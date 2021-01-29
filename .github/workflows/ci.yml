@@ -79,6 +79,6 @@ jobs:
         python-version: '3.x'
         architecture: 'x64'
     - name: Install Locust
-      run: python3 -m pip install locustio
+      run: python3 -m pip install locustio==0.14.6
     - name: Load tests
       run: npm run test:load
