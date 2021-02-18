@@ -1,6 +1,7 @@
 import { Context } from "koa";
 import { config } from "./config";
 import { transports, format } from "winston";
+import * as path from "path";
 
 const logger = (winstonInstance: any): any  => {
     winstonInstance.configure({
@@ -8,7 +9,7 @@ const logger = (winstonInstance: any): any  => {
         transports: [
             //
             // - Write all logs error (and below) to `error.log`.
-            new transports.File({ filename: "error.log", level: "error" }),
+            new transports.File({ filename: path.resolve(__dirname, "../error.log"), level: "error" }),
             //
             // - Write to all logs with specified level to console.
             new transports.Console({
@@ -21,11 +22,14 @@ const logger = (winstonInstance: any): any  => {
     });
 
     return async (ctx: Context, next: () => Promise<any>): Promise<void> => {
-
+        
         const start = new Date().getTime();
-
-        await next();
-
+        try {
+            await next();
+          } catch (err) {
+            ctx.status = err.status || 500;
+            ctx.body = err.message;
+          }
         const ms = new Date().getTime() - start;
 
         let logLevel: string;

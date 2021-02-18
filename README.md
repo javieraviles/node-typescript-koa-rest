@@ -61,6 +61,7 @@ Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuYW1lIjoiSmF2aWVyIEF2
   - [dependencies](#dependencies-1)
   - [devDependencies](#devdependencies)
   - [Changelog](#changelog)
+    - [1.7.1](#171)
     - [1.7.0](#170)
     - [1.6.1](#161)
     - [1.6.0](#160)
@@ -493,6 +494,9 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 
 ## Changelog
+### 1.7.1
+ - Upgrading Locust + fixing load tests
+ - Improving Logger
 
 ### 1.7.0
  - Migrating `TSLint` (deprecated already) to `ESLint`

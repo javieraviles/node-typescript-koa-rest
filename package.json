@@ -13,7 +13,7 @@
     "start": "npm run serve",
     "test:integration:heroku": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/env/heroku-dev.postman_environment.json",
     "test:integration:local": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/env/local-dev.postman_environment.json",
-    "test:load": "locust --no-web -c 50 -r 10 -f loadtests/locustfile.py --run-time 1m --host=https://node-typescript-koa-rest.herokuapp.com",
+    "test:load": "locust --headless -u 50 -r 10 -t 60s -f loadtests/locustfile.py --host=https://node-typescript-koa-rest.herokuapp.com"
     "test": "jest",
     "test:coverage": "jest --collect-coverage",
     "test:watch": "jest --watch"
@@ -72,7 +72,7 @@
     "koa-helmet": "^5.2.0",
     "koa-jwt": "^3.6.0",
     "@koa/router": "^8.0.8",
-    "koa-swagger-decorator": "^1.5.16",
+    "koa-swagger-decorator": "^1.6.4",
     "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.24",
