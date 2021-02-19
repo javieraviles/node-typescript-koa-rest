@@ -13,7 +13,10 @@
     "start": "npm run serve",
     "test:integration:heroku": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/env/heroku-dev.postman_environment.json",
     "test:integration:local": "newman run integrationtests/node-koa-typescript.postman_collection.json -e integrationtests/env/local-dev.postman_environment.json",
-    "test:load": "locust --headless -u 50 -r 10 -t 60s -f loadtests/locustfile.py --host=https://node-typescript-koa-rest.herokuapp.com"
+    "test:load": "locust --headless -u 50 -r 10 -t 60s -f loadtests/locustfile.py --host=https://node-typescript-koa-rest.herokuapp.com",
+    "test": "jest",
+    "test:coverage": "jest --collect-coverage",
+    "test:watch": "jest --watch"
   },
   "engines": {
     "node": "12.x.x",
@@ -41,6 +44,7 @@
   "repository": "github:javieraviles/node-typescript-koa-rest",
   "devDependencies": {
     "@types/cron": "^1.7.2",
+    "@types/jest": "^26.0.20",
     "@types/koa": "2.0.49",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-helmet": "^3.1.2",
@@ -51,8 +55,10 @@
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "eslint": "^6.8.0",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.2",
     "shelljs": "^0.8.3",
+    "ts-jest": "^26.4.4",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"
   },
@@ -71,5 +77,12 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.24",
     "winston": "^3.2.1"
+  },
+  "jest": {
+    "roots": ["<rootDir>/src"],
+    "testMatch": ["**/tests/**/*.+(ts|tsx|js)"],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    }
   }
 }
