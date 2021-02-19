@@ -79,8 +79,12 @@
     "winston": "^3.2.1"
   },
   "jest": {
-    "roots": ["<rootDir>/src"],
-    "testMatch": ["**/tests/**/*.+(ts|tsx|js)"],
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/tests/**/*.+(ts|tsx|js)"
+    ],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     }
