@@ -24,6 +24,7 @@ createConnection({
     entities: config.dbEntitiesPath,
     extra: {
         ssl: config.dbsslconn, // if not development, will use SSL
+        rejectUnauthorized: false // Heroku self signed certificates
     }
 }).then(async () => {
 
