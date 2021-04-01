@@ -494,6 +494,10 @@ To install or update these dependencies you can use `npm install` or `npm update
 
 
 ## Changelog
+### 1.8.0
+ - Unit tests included using Jest (Thanks to [@rafapaezbas](https://github.com/rafapaezbas))
+ - Upgrade all dependencies
+ - Upgrade to Node 14
 ### 1.7.1
  - Upgrading Locust + fixing load tests
  - Improving Logger

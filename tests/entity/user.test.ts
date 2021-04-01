@@ -1,4 +1,4 @@
-import { User } from "../../entity/user";
+import { User } from "../../src/entity/user";
 
 test("user",() => {
     const user = new User();

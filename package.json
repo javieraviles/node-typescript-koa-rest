@@ -1,10 +1,10 @@
 {
   "name": "node-typescript-koa-rest",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "API REST using NodeJS and KOA framework, typescript. TypeORM for SQL with class-validators. Middlewares JWT, CORS, Winston Logger. Swagger API docs",
   "main": "dist/server.js",
   "scripts": {
-    "watch-server": "nodemon --watch src -e ts,tsx --exec ts-node src/server.ts",
+    "watch-server": "nodemon --ignore tests/ --watch src -e ts,tsx --exec ts-node src/server.ts",
     "build-ts": "tsc",
     "copy-static-assets": "ts-node copyStaticAssets.ts",
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
@@ -19,7 +19,7 @@
     "test:watch": "jest --watch"
   },
   "engines": {
-    "node": "12.x.x",
+    "node": "14.x.x",
     "npm": "6.x.x"
   },
   "author": "Javier Aviles",
@@ -44,43 +44,43 @@
   "repository": "github:javieraviles/node-typescript-koa-rest",
   "devDependencies": {
     "@types/cron": "^1.7.2",
-    "@types/jest": "^26.0.20",
-    "@types/koa": "2.0.49",
+    "@types/jest": "^26.0.22",
+    "@types/koa": "2.13.1",
     "@types/koa-bodyparser": "^4.3.0",
-    "@types/koa-helmet": "^3.1.2",
-    "@types/koa__router": "^8.0.2",
-    "@types/koa__cors": "^3.0.1",
-    "@types/node": "^12.12.6",
-    "@types/shelljs": "^0.8.7",
-    "@typescript-eslint/eslint-plugin": "^2.27.0",
-    "@typescript-eslint/parser": "^2.27.0",
-    "eslint": "^6.8.0",
+    "@types/koa-helmet": "^6.0.2",
+    "@types/koa__router": "^8.0.4",
+    "@types/koa__cors": "^3.0.2",
+    "@types/node": "^14.14.37",
+    "@types/shelljs": "^0.8.8",
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "eslint": "^7.23.0",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.2",
-    "shelljs": "^0.8.3",
-    "ts-jest": "^26.4.4",
-    "ts-node": "^8.8.2",
+    "nodemon": "^2.0.7",
+    "shelljs": "^0.8.4",
+    "ts-jest": "^26.5.4",
+    "ts-node": "^9.1.1",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@koa/cors": "^3.0.0",
-    "class-validator": "^0.11.1",
+    "@koa/cors": "^3.1.0",
+    "class-validator": "^0.13.1",
     "cron": "^1.8.2",
     "dotenv": "^8.2.0",
-    "koa": "^2.11.0",
+    "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
-    "koa-helmet": "^5.2.0",
-    "koa-jwt": "^3.6.0",
-    "@koa/router": "^8.0.8",
+    "koa-helmet": "^6.1.0",
+    "koa-jwt": "^4.0.0",
+    "@koa/router": "^10.0.0",
     "koa-swagger-decorator": "^1.6.4",
-    "pg": "^7.12.1",
+    "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.24",
-    "winston": "^3.2.1"
+    "typeorm": "^0.2.32",
+    "winston": "^3.3.3"
   },
   "jest": {
     "roots": [
-      "<rootDir>/src"
+      "<rootDir>"
     ],
     "testMatch": [
       "**/tests/**/*.+(ts|tsx|js)"
