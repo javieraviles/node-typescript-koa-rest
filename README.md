@@ -171,11 +171,15 @@ It is importante to notice that, when serving the project directly with *.ts fil
 
 Notice that if NODE_ENV is set to development, the ORM config won't be using SSL to connect to the DB. Otherwise it will.
 
+And because Heroku uses self-signed certificates, this bit has been added, **please take it out if connecting to a local DB without SSL**.
+
 ```
 createConnection({
     ...
     extra: {
-        ssl: config.DbSslConn, // if not development, will use SSL
+        ssl: {
+            rejectUnauthorized: false // Heroku uses self signed certificates
+        }
     }
  })
 ```
