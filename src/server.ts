@@ -57,8 +57,8 @@ createConnection({
     // Register cron job to do any action needed
     cron.start();
 
-    app.listen(config.port);
-
-    console.log(`Server running on port ${config.port}`);
+    app.listen(config.port, () => {
+        console.log(`Server running on port ${config.port}`);
+    });
 
 }).catch((error: string) => console.log("TypeORM connection error: ", error));
