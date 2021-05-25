@@ -4,7 +4,7 @@ import bodyParser from "koa-bodyparser";
 import helmet from "koa-helmet";
 import cors from "@koa/cors";
 import winston from "winston";
-import { createConnection } from "typeorm";
+import { createConnection, ConnectionOptions } from "typeorm";
 import "reflect-metadata";
 
 import { logger } from "./logger";
@@ -13,22 +13,25 @@ import { unprotectedRouter } from "./unprotectedRoutes";
 import { protectedRouter } from "./protectedRoutes";
 import { cron } from "./cron";
 
-// create connection with database
-// note that its not active database connection
-// TypeORM creates you connection pull to uses connections from pull on your requests
-createConnection({
+const connectionOptions: ConnectionOptions = {
     type: "postgres",
     url: config.databaseUrl,
     synchronize: true,
     logging: false,
     entities: config.dbEntitiesPath,
     ssl: config.dbsslconn, // if not development, will use SSL
-    extra: {
-        ssl: {
-            rejectUnauthorized: false // Heroku uses self signed certificates
-        }
-    }
-}).then(async () => {
+    extra: {}
+};
+if (connectionOptions.ssl) {
+    connectionOptions.extra.ssl = {
+        rejectUnauthorized: false // Heroku uses self signed certificates
+    };
+}
+
+// create connection with database
+// note that its not active database connection
+// TypeORM creates you connection pull to uses connections from pull on your requests
+createConnection(connectionOptions).then(async () => {
 
     const app = new Koa();
 
