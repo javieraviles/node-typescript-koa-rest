@@ -42,7 +42,7 @@ createConnection(connectionOptions).then(async () => {
           scriptSrc:["'self'", "'unsafe-inline'", "cdnjs.cloudflare.com"],
           styleSrc:["'self'", "'unsafe-inline'", "cdnjs.cloudflare.com", "fonts.googleapis.com"],
           fontSrc:["'self'","fonts.gstatic.com"],
-          imgSrc:["'self'", "data:"]
+          imgSrc:["'self'", "data:", "online.swagger.io"]
         }
     }));
 
