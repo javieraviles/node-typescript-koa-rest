@@ -3,6 +3,8 @@ import { getManager, Repository, Not, Equal, Like } from "typeorm";
 import { validate, ValidationError } from "class-validator";
 import { request, summary, path, body, responsesAll, tagsAll } from "koa-swagger-decorator";
 import { User, userSchema } from "../entity/user";
+import {logger} from "../logger";
+import * as console from "console";
 
 @responsesAll({ 200: { description: "success"}, 400: { description: "bad request"}, 401: { description: "unauthorized, missing/wrong jwt token"}})
 @tagsAll(["User"])
@@ -60,7 +62,8 @@ export default class UserController {
         const userToBeSaved: User = new User();
         userToBeSaved.name = ctx.request.body.name;
         userToBeSaved.email = ctx.request.body.email;
-
+        console.log(userToBeSaved);
+        logger(userToBeSaved);
         // validate user entity
         const errors: ValidationError[] = await validate(userToBeSaved); // errors is an array of validation errors
 
